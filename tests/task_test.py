@@ -1,11 +1,98 @@
+import helper as h
+import json
+
+SUCESS = 0
+FAILED = 1
+CONNECTION_ERROR = 2
+
+def is_task(data):
+  return 'name' in data and 'content' in data and 'deadline' in data and 'status' in data and 'id' in data
+
+def create_test():
+  try:
+    user_payload = {
+      'name': 'assignment',
+      'content': 'Backend assignment',
+      'status': 'in progress',
+      'deadline': '2022-07-02 00:00:00'
+    }
+    res = h.post('/task', json.dumps(user_payload))
+
+    if res.status_code != 200:
+      return FAILED
+
+    res_data = json.loads(res.text)
+
+    if not is_task(res_data):
+      return FAILED
+    
+    return SUCESS
+
+  except:
+    return CONNECTION_ERROR
+
+def read_test():
+  try:
+    res = h.get('/task')
+    if res.status_code != 200:
+      return FAILED
+    res_data = json.dumps(res.text)
+    if len(res_data) < 1:
+      return FAILED
+    test_data = res_data[0]
+    if not is_task(test_data):
+      return FAILED
+
+    return SUCESS
+  except:
+    return CONNECTION_ERROR
+
+def update_test():
+  try:
+    new_data = {
+      'deadline': '2022-07-30 00:00:00'
+    }
+    res = h.put('/task/10001', json.dumps(new_data))
+    if res.status_code != 200:
+      return FAILED
+    res_data = json.dumps(res.text)
+    if not (is_task(res_data) and res['deadline'] == '2022-07-30 00:00:00'):
+      return FAILED
+
+    return SUCESS  
+  except:
+    return CONNECTION_ERROR
+
+def delete_test():
+  try:
+    res = h.delete('/task/10001')
+    if res.status_code != 200:
+      return FAILED
+    res_data = json.dumps(res.text)
+    if not is_task(res_data):
+      return FAILED
+    return SUCESS
+  except:
+    return CONNECTION_ERROR
+
+def find_test():
+  try:
+    res = h.get('/task/10001')
+    if res.status_code != 200:
+      return FAILED
+    res_data = json.dumps(res.text)
+    if not is_task(res_data):
+      return FAILED
+
+    return SUCESS
+  except:
+    return CONNECTION_ERROR
+
 def task_test():
-  # Create task
-  
-  # Read all taskk
+  tests_name = ['Create', 'Read', 'Update', 'Delete', 'Find']
+  tests_func = [create_test, read_test, update_test, delete_test, find_test]
 
-  # Update task
+  eval_func = {0: h.log_success, 1: h.log_failure, 2: h.log_connection_error}
 
-  # Delete task
-
-  # Find task
-  pass
+  for test_name, test_func in zip(tests_name, tests_func):
+    eval_func[test_func()](test_name)
