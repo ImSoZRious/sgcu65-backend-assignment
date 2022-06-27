@@ -1,4 +1,4 @@
-[Insert Your Name Here]
+ปัณณวิชญ์ โลหะนิมิต
 
 # SGCU65 Backend Recruitment
 
