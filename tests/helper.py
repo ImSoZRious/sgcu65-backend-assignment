@@ -55,3 +55,6 @@ def log_success(*msg):
 
 def log_failure(*msg):
   print('❌:', *msg)
+
+def log_connection_error(*msg):
+  print('❌:', *msg, '[Connection Error]')
