@@ -1,5 +1,5 @@
 use crate::schema::tasks;
-use crate::schema::users::dsl::users as all_users;
+use crate::schema::tasks::dsl::tasks as all_tasks;
 use diesel::prelude::*;
 use diesel::{Insertable, Queryable};
 
