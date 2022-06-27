@@ -1,7 +1,5 @@
-use crate::schema::tasks;
 use crate::schema::users;
 use crate::schema::users::dsl::users as all_users;
-use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use diesel::{Insertable, Queryable};
 
@@ -14,15 +12,6 @@ pub struct User {
   pub role: String,
 }
 
-#[derive(Queryable)]
-pub struct Task {
-  pub id: i32,
-  pub name: String,
-  pub content: String,
-  pub status: String,
-  pub deadline: String,
-}
-
 #[derive(Insertable)]
 #[table_name = "users"]
 pub struct NewUser {
@@ -32,11 +21,18 @@ pub struct NewUser {
   pub role: String,
 }
 
-#[derive(Insertable)]
-#[table_name = "tasks"]
-pub struct NewTask {
-  pub name: String,
-  pub content: String,
-  pub status: String,
-  pub deadline: String,
+impl User {
+  pub fn create_user(user: NewUser, conn: &PgConnection) -> bool {
+    diesel::insert_into(users::table)
+      .values(&user)
+      .execute(conn)
+      .is_ok()
+  }
+
+  pub fn get_all_users(conn: &PgConnection) -> Vec<User> {
+    all_users
+      .order(users::id.desc())
+      .load::<User>(conn)
+      .expect("error!")
+  }
 }
