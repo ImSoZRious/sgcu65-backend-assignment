@@ -14,6 +14,7 @@
   - [Find task](#find-task)
 - [Addtional Idea: Role (enum)](#addtional-idea-role-enum)
 - [Timestamp](#timestamp)
+- [ID](#id)
 
 # User
 ## Create task
@@ -30,7 +31,7 @@ Create user payload.
 This method, if successful, returns same object that is sent with id of the user.
 ```
 {
-  id: u64,
+  id: ID,
   email: string,
   firstname: string,
   lastname: string,
@@ -54,11 +55,11 @@ Update user object. At least one of the optional field is required.
 This method, if successful, returns result after updated.
 ```
 {
-  id: u64,
-  name: string,
-  content: string,
-  status: string,
-  deadline: string
+  id: ID,
+  email: string,
+  firstname: string,
+  lastname: string,
+  role: string
 }
 ```
 
@@ -67,7 +68,7 @@ __DELETE /user/:id__ \
 return the user before delete
 ```
 {
-  id: u64,
+  id: ID,
   email: string,
   firstname: string,
   lastname: string,
@@ -79,7 +80,7 @@ return the user before delete
 __GET /user/:id__
 ```
 {
-  id: u64,
+  id: ID,
   email: string,
   firstname: string,
   lastname: string,
@@ -96,17 +97,17 @@ Create task payload.
   name: string,
   content: string,
   status: string,
-  deadline: string
+  deadline: Timestamp
 }
 ```
 This method, if successful, returns same object that is sent with id of the task.
 ```
 {
-  id: u64,
+  id: ID,
   name: string,
   content: string,
   status: string,
-  deadline: string
+  deadline: Timestamp
 }
 ```
 ## Read all task
@@ -126,11 +127,11 @@ Update task. At least one of the optional field is required.
 This method, if successful, returns result after updated.
 ```
 {
-  id: u64,
+  id: ID,
   name: string,
   content: string,
   status: string,
-  deadline: string
+  deadline: Timestamp
 }
 ```
 
@@ -153,7 +154,7 @@ __GET /task/:id__ \
 return 404 if not found.
 ```
 {
-  id: u64,
+  id: ID,
   name: string,
   content: string,
   status: string,
@@ -170,3 +171,6 @@ making role as enum make
 
 # Timestamp
 Timestamp is string which formatted as 'YYYY-MM-DD HH:MM:SS' such as '2022-12-31 15:45:10'.
+
+# ID
+ID is 5-digit number string start from "10000" - "99999"
