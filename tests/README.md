@@ -163,10 +163,10 @@ return 404 if not found.
 
 # Addtional Idea: Role (enum)
 making role as enum make 
-- UX/UI designer
-- Frontend developer
-- Backend developer
-- Project manager
+- UX/UI Designer
+- Frontend Developer
+- Backend Developer
+- Project Manager
 
 # Timestamp
 Timestamp is string which formatted as 'YYYY-MM-DD HH:MM:SS' such as '2022-12-31 15:45:10'.
