@@ -51,7 +51,16 @@ Update user object. At least one of the optional field is required.
   role?: string
 }
 ```
-
+This method, if successful, returns result after updated.
+```
+{
+  id: u64,
+  name: string,
+  content: string,
+  status: string,
+  deadline: string
+}
+```
 
 ## Delete user
 __DELETE /user/:id__ \
@@ -77,7 +86,6 @@ __GET /user/:id__
   role: string
 }
 ```
-
 
 # Task
 ## Create task
@@ -113,6 +121,16 @@ Update task. At least one of the optional field is required.
   content?: string,
   status?: string,
   deadline?: Timestamp
+}
+```
+This method, if successful, returns result after updated.
+```
+{
+  id: u64,
+  name: string,
+  content: string,
+  status: string,
+  deadline: string
 }
 ```
 
