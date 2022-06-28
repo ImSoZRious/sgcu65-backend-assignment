@@ -92,6 +92,55 @@ fn find_user() {
   let _user = User::find(user_id, &conn).unwrap();
 }
 
+#[test]
+fn combined_user_test() {
+  let conn = get_db_con();
+
+  let users = vec![
+    NewUser {
+      email: s!("abc@hotmail.com"),
+      firstname: s!("Spirited"),
+      lastname: s!("Away"),
+      role: s!("UX/UI Designer"),
+    },
+    NewUser {
+      email: s!("def@outlook.com"),
+      firstname: s!("Inter"),
+      lastname: s!("Stellar"),
+      role: s!("Backend Developer"),
+    },
+    NewUser {
+      email: s!("noidea@gmail.com"),
+      firstname: s!("Get"),
+      lastname: s!("Out"),
+      role: s!("Project Manager"),
+    },
+  ];
+
+  for user in users.iter() {
+    let _user = User::create(user, &conn).unwrap();
+  }
+
+  let edit_infos = vec![UpdateUser {
+    id: 10003,
+    email: None,
+    firstname: Some(s!("God")),
+    lastname: Some(s!("Father")),
+    role: None,
+  }];
+
+  for edit_info in edit_infos.iter() {
+    let _ = User::update(edit_info, &conn).unwrap();
+  }
+
+  let users = User::get_all(&conn).unwrap();
+  assert_eq!(users.len(), 3);
+
+  let _del = User::delete(10002, &conn);
+  let users = User::get_all(&conn).unwrap();
+  assert_eq!(users.len(), 2);
+}
+
 // Task test
 #[test]
 fn get_all_task() {
@@ -145,4 +194,53 @@ fn find_task() {
   let task_id = 3;
 
   let _task = Task::find(task_id, &conn).unwrap();
+}
+
+#[test]
+fn combined_task_test() {
+  let conn = get_db_con();
+
+  let users = vec![
+    NewTask {
+      name: s!("Nono"),
+      content: s!("nop"),
+      status: s!("Done"),
+      deadline: s!("2022-28-06 19:06:00"),
+    },
+    NewTask {
+      name: s!("Calculus"),
+      content: s!("read your book"),
+      status: s!("Done"),
+      deadline: s!("2022-05-31 04:00:00"),
+    },
+    NewTask {
+      name: s!("Chem lab"),
+      content: s!("Info in the MCV"),
+      status: s!("Done"),
+      deadline: s!("2023-01-01 00:00:00"),
+    },
+  ];
+
+  for task in users.iter() {
+    let _task = Task::create(task, &conn).unwrap();
+  }
+
+  let edit_infos = vec![UpdateTask {
+    id: 10003,
+    name: Some(s!("yay")),
+    content: Some(s!("im running out of name")),
+    status: None,
+    deadline: None,
+  }];
+
+  for edit_info in edit_infos.iter() {
+    let _ = Task::update(edit_info, &conn).unwrap();
+  }
+
+  let users = Task::get_all(&conn).unwrap();
+  assert_eq!(users.len(), 3);
+
+  let _del = Task::delete(10002, &conn);
+  let users = Task::get_all(&conn).unwrap();
+  assert_eq!(users.len(), 2);
 }

@@ -69,8 +69,6 @@ impl User {
       set_string, user.id
     );
 
-    println!("{}", query_string);
-
     // Result is not actually user since this query isn't select query
     let res: Result<Vec<User>, Error> = diesel::sql_query(query_string).load(conn);
 
