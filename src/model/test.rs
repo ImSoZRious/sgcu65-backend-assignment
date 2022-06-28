@@ -9,7 +9,6 @@ use super::user::{NewUser, UpdateUser, User};
 
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
-use diesel::result::Error;
 
 macro_rules! s {
   ($s: expr) => {{

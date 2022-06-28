@@ -2,10 +2,11 @@ use crate::schema::users;
 use crate::schema::users::dsl::users as all_users;
 use diesel::prelude::*;
 use diesel::{Insertable, Queryable, QueryableByName};
+use serde::{Deserialize, Serialize};
 
 use diesel::result::Error;
 
-#[derive(Queryable, Debug, QueryableByName, Clone)]
+#[derive(Queryable, Debug, QueryableByName, Clone, Serialize)]
 #[table_name = "users"]
 pub struct User {
   pub id: i32,
@@ -15,7 +16,7 @@ pub struct User {
   pub role: String,
 }
 
-#[derive(Insertable)]
+#[derive(Insertable, Deserialize)]
 #[table_name = "users"]
 pub struct NewUser {
   pub email: String,
@@ -24,11 +25,16 @@ pub struct NewUser {
   pub role: String,
 }
 
+#[derive(Deserialize)]
 pub struct UpdateUser {
   pub id: i32,
+  #[serde(default)]
   pub email: Option<String>,
+  #[serde(default)]
   pub firstname: Option<String>,
+  #[serde(default)]
   pub lastname: Option<String>,
+  #[serde(default)]
   pub role: Option<String>,
 }
 

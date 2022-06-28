@@ -3,8 +3,9 @@ use crate::schema::tasks::dsl::tasks as all_tasks;
 use diesel::prelude::*;
 use diesel::result::Error;
 use diesel::{Insertable, Queryable, QueryableByName};
+use serde::{Deserialize, Serialize};
 
-#[derive(Queryable, Debug, QueryableByName, Clone)]
+#[derive(Queryable, Debug, QueryableByName, Clone, Serialize)]
 #[table_name = "tasks"]
 pub struct Task {
   pub id: i32,
@@ -13,7 +14,7 @@ pub struct Task {
   pub status: String,
   pub deadline: String,
 }
-#[derive(Insertable)]
+#[derive(Insertable, Deserialize)]
 #[table_name = "tasks"]
 pub struct NewTask {
   pub name: String,
@@ -22,11 +23,16 @@ pub struct NewTask {
   pub deadline: String,
 }
 
+#[derive(Deserialize)]
 pub struct UpdateTask {
   pub id: i32,
+  #[serde(default)]
   pub name: Option<String>,
+  #[serde(default)]
   pub content: Option<String>,
+  #[serde(default)]
   pub status: Option<String>,
+  #[serde(default)]
   pub deadline: Option<String>,
 }
 
@@ -66,8 +72,6 @@ impl Task {
     WHERE id = {}",
       set_string, task.id
     );
-
-    println!("{}", query_string);
 
     // Result is not actually task since this query isn't select query
     let res: Result<Vec<Task>, Error> = diesel::sql_query(query_string).load(conn);

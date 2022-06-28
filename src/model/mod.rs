@@ -1,4 +1,4 @@
-mod task;
+pub mod task;
 #[cfg(test)]
 mod test;
-mod user;
+pub mod user;
