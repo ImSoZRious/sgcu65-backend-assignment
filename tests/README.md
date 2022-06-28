@@ -52,17 +52,7 @@ Update user object. At least one of the optional field is required.
   role?: string
 }
 ```
-This method, if successful, returns result after updated.
-```
-{
-  id: ID,
-  email: string,
-  firstname: string,
-  lastname: string,
-  role: string
-}
-```
-
+This method, if successful, returns with status code 200
 ## Delete user
 __DELETE /user/:id__ \
 return the user before delete
@@ -124,17 +114,7 @@ Update task. At least one of the optional field is required.
   deadline?: Timestamp
 }
 ```
-This method, if successful, returns result after updated.
-```
-{
-  id: ID,
-  name: string,
-  content: string,
-  status: string,
-  deadline: Timestamp
-}
-```
-
+This method, if successful, returns with status code 200
 
 ## Delete task
 __DELETE /task/:id__ \
