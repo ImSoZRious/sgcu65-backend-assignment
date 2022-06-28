@@ -3,15 +3,20 @@ extern crate rocket;
 #[macro_use]
 extern crate diesel;
 
+mod db;
 mod model;
+mod route;
 mod schema;
-
-#[get("/")]
-fn hello() -> &'static str {
-  "Hello, world!"
-}
 
 #[launch]
 fn rocket() -> _ {
-  rocket::build().mount("/", routes![hello])
+  rocket::build().manage(db::init_pool()).mount(
+    "/user",
+    routes![
+      route::user::get,
+      route::user::create,
+      route::user::update,
+      route::user::delete
+    ],
+  )
 }
