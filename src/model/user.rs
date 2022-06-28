@@ -2,19 +2,11 @@ use crate::schema::users;
 use crate::schema::users::dsl::users as all_users;
 use diesel::prelude::*;
 use diesel::{Insertable, Queryable, QueryableByName};
-use rocket::http::Status;
 use serde::{Deserialize, Serialize};
-
-use rocket::data::{self, ByteUnit, Data, FromData};
-use rocket::request::Request;
 
 use diesel::result::Error;
 
-// Always use a limit to prevent DoS attacks.
-const LIMIT: u64 = 1024;
-
 #[derive(Queryable, Debug, QueryableByName, Clone, Serialize)]
-#[serde(crate = "rocket::serde")]
 #[table_name = "users"]
 pub struct User {
   pub id: i32,
@@ -25,7 +17,6 @@ pub struct User {
 }
 
 #[derive(Insertable, Deserialize)]
-#[serde(crate = "rocket::serde")]
 #[table_name = "users"]
 pub struct NewUser {
   pub email: String,
@@ -34,8 +25,7 @@ pub struct NewUser {
   pub role: String,
 }
 
-#[derive(Deserialize, FromForm)]
-#[serde(crate = "rocket::serde")]
+#[derive(Deserialize)]
 pub struct UpdateUser {
   #[serde(default)]
   pub id: i32,
