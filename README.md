@@ -1,5 +1,18 @@
 ปัณณวิชญ์ โลหะนิมิต
 
+# Setup
+rust toolchain is required.
+## Rust toolchain setup
+[Rustup](https://www.rust-lang.org/learn/get-started)
+
+## Compile and run
+```sh
+cargo run
+```
+
+# Troubleshoot
+## [Program exit with code 3](https://github.com/diesel-rs/diesel/discussions/2947)
+
 # SGCU65 Backend Recruitment
 
 แบบทดสอบทางวิศวกรรมซอฟต์แวร์ เพื่อสรรหาบุคคลเข้ารับตำแหน่ง Backend Developer ประจำปีการศึกษา 2565
