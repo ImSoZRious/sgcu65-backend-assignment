@@ -33,9 +33,9 @@ pub struct UpdateUser {
 }
 
 impl User {
-  pub fn create(user: NewUser, conn: &PgConnection) -> Result<User, Error> {
+  pub fn create(user: &NewUser, conn: &PgConnection) -> Result<User, Error> {
     diesel::insert_into(users::table)
-      .values(&user)
+      .values(user)
       .get_results(conn)
       .map(|user_vec: Vec<User>| user_vec[0].clone())
   }
@@ -44,19 +44,19 @@ impl User {
     all_users.order(users::id.desc()).load::<User>(conn)
   }
 
-  pub fn update(user: UpdateUser, conn: &PgConnection) -> Result<(), Error> {
+  pub fn update(user: &UpdateUser, conn: &PgConnection) -> Result<(), Error> {
     let mut set_string_vec: Vec<String> = vec![];
 
-    if let Some(email) = user.email {
+    if let Some(email) = &user.email {
       set_string_vec.push(format!("email = '{}'", email));
     }
-    if let Some(firstname) = user.firstname {
+    if let Some(firstname) = &user.firstname {
       set_string_vec.push(format!("firstname = '{}'", firstname));
     }
-    if let Some(lastname) = user.lastname {
+    if let Some(lastname) = &user.lastname {
       set_string_vec.push(format!("lastname = '{}'", lastname));
     }
-    if let Some(role) = user.role {
+    if let Some(role) = &user.role {
       set_string_vec.push(format!("role = '{}'", role));
     }
 

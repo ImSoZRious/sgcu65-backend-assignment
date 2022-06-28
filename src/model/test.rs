@@ -54,7 +54,9 @@ fn create_user() {
     role: s!("Frontend Developer"),
   };
 
-  let _user = User::create(new_user, &conn).unwrap();
+  let _user = User::create(&new_user, &conn).unwrap();
+
+  println!("{:?}", _user);
 }
 
 #[test]
@@ -69,7 +71,7 @@ fn update_user() {
     role: None,
   };
 
-  let _result = User::update(update_info, &conn).unwrap();
+  let _result = User::update(&update_info, &conn).unwrap();
 }
 
 #[test]
@@ -90,6 +92,7 @@ fn find_user() {
   let _user = User::find(user_id, &conn).unwrap();
 }
 
+// Task test
 #[test]
 fn get_all_task() {
   let conn = get_db_con();
@@ -97,7 +100,6 @@ fn get_all_task() {
   let _users = Task::get_all(&conn).unwrap();
 }
 
-// Task test
 #[test]
 fn create_task() {
   let conn = get_db_con();
@@ -109,7 +111,7 @@ fn create_task() {
     deadline: s!("2022-10-31 12:00:00"),
   };
 
-  let _task = Task::create(new_task, &conn).unwrap();
+  let _task = Task::create(&new_task, &conn).unwrap();
 }
 
 #[test]
@@ -124,7 +126,7 @@ fn update_task() {
     deadline: None,
   };
 
-  let _result = Task::update(update_info, &conn).unwrap();
+  let _result = Task::update(&update_info, &conn).unwrap();
 }
 
 #[test]
