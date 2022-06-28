@@ -14,16 +14,16 @@ cargo run
 ## [Program exit with code 3](https://github.com/diesel-rs/diesel/discussions/2947)
 
 # TODO
-[-] use functor
-[-] find task by name
-[-] find user by firstname, lastname
-[-] assign task to user
-[-] Redesign database for team
-[-] Team (CRUD)
-[-] Team Find
-[-] Team assign user
-[-] Team assign task
-[-] TBD
+- [ ] use functor
+- [ ] find task by name
+- [ ] find user by firstname, lastname
+- [ ] assign task to user
+- [ ] Redesign database for team
+- [ ] Team (CRUD)
+- [ ] Team Find
+- [ ] Team assign user
+- [ ] Team assign task
+- [ ] TBD
 
 
 # SGCU65 Backend Recruitment
