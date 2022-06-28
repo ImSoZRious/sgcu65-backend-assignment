@@ -53,3 +53,16 @@ pub async fn delete(id: i32, conn: DbConn) -> Status {
     Err(_) => Status::InternalServerError,
   }
 }
+
+#[get("/<id>", rank = 1)]
+pub async fn find(id: i32, conn: DbConn) -> Result<Json, Status> {
+  let result = Task::find(id, &conn);
+
+  match result {
+    Ok(task) => match serde_json::to_string(&task) {
+      Ok(task_string) => Ok(Json(task_string)),
+      Err(_) => Err(Status::InternalServerError),
+    },
+    Err(_) => Err(Status::InternalServerError),
+  }
+}

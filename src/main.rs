@@ -18,7 +18,8 @@ fn rocket() -> _ {
         route::user::get,
         route::user::create,
         route::user::update,
-        route::user::delete
+        route::user::delete,
+        route::user::find
       ],
     )
     .mount(
@@ -27,7 +28,8 @@ fn rocket() -> _ {
         route::task::get,
         route::task::create,
         route::task::update,
-        route::task::delete
+        route::task::delete,
+        route::task::find
       ],
     )
 }

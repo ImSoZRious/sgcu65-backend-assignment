@@ -5,7 +5,7 @@ use super::Json;
 
 use rocket::http::Status;
 
-#[get("/")]
+#[get("/", rank = 2)]
 pub async fn get(conn: DbConn) -> Result<Json, Status> {
   let result = User::get_all(&conn);
 
@@ -51,5 +51,18 @@ pub async fn delete(id: i32, conn: DbConn) -> Status {
     Ok(1) => Status::Ok,
     Ok(_) => Status::NotFound,
     Err(_) => Status::InternalServerError,
+  }
+}
+
+#[get("/<id>", rank = 1)]
+pub async fn find(id: i32, conn: DbConn) -> Result<Json, Status> {
+  let result = User::find(id, &conn);
+
+  match result {
+    Ok(user) => match serde_json::to_string(&user) {
+      Ok(user_string) => Ok(Json(user_string)),
+      Err(_) => Err(Status::InternalServerError),
+    },
+    Err(_) => Err(Status::InternalServerError),
   }
 }
