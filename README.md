@@ -24,6 +24,7 @@ cargo run
 - [ ] Team assign user
 - [ ] Team assign task
 - [ ] TBD
+- [ ] Docker if have excess time
 
 
 # SGCU65 Backend Recruitment
