@@ -54,17 +54,7 @@ Update user object. At least one of the optional field is required.
 ```
 This method, if successful, returns with status code 200
 ## Delete user
-__DELETE /user/:id__ \
-return the user before delete
-```
-{
-  id: ID,
-  email: string,
-  firstname: string,
-  lastname: string,
-  role: string
-}
-```
+__DELETE /user/:id__
 
 ## Find user
 __GET /user/:id__
@@ -118,17 +108,7 @@ This method, if successful, returns with status code 200
 
 ## Delete task
 __DELETE /task/:id__ \
-Delete task. \
-return the task before delete
-```
-{
-  name?: string,
-  content?: string,
-  status?: string,
-  deadline?: Timestamp
-}
-```
-
+Delete task.
 ## Find task
 __GET /task/:id__ \
 return 404 if not found.
