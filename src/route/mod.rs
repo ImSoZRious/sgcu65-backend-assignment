@@ -1,3 +1,5 @@
+pub mod task;
+pub mod task_guard;
 pub mod user;
 pub mod user_guard;
 

@@ -10,13 +10,24 @@ mod schema;
 
 #[launch]
 fn rocket() -> _ {
-  rocket::build().manage(db::init_pool()).mount(
-    "/user",
-    routes![
-      route::user::get,
-      route::user::create,
-      route::user::update,
-      route::user::delete
-    ],
-  )
+  rocket::build()
+    .manage(db::init_pool())
+    .mount(
+      "/user",
+      routes![
+        route::user::get,
+        route::user::create,
+        route::user::update,
+        route::user::delete
+      ],
+    )
+    .mount(
+      "/task",
+      routes![
+        route::task::get,
+        route::task::create,
+        route::task::update,
+        route::task::delete
+      ],
+    )
 }
