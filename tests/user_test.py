@@ -16,7 +16,7 @@ def create_test():
       'lastname': 'Nemo',
       'role': 'UX/UI Designer'
     }
-    res = h.post('/user', json.dumps(user_payload))
+    res = h.post('/user', user_payload)
 
     if res.status_code != 200:
       return FAILED
@@ -36,7 +36,7 @@ def read_test():
     res = h.get('/user')
     if res.status_code != 200:
       return FAILED
-    res_data = json.dumps(res.text)
+    res_data = json.loads(res.text)
     if len(res_data) < 1:
       return FAILED
     test_data = res_data[0]
@@ -52,10 +52,10 @@ def update_test():
     new_data = {
       'role': 'Backend Developer'
     }
-    res = h.put('/user/10001', json.dumps(new_data))
+    res = h.put('/user/10001', new_data)
     if res.status_code != 200:
       return FAILED
-    res_data = json.dumps(res.text)
+    res_data = json.loads(res.text)
     if not (is_user(res_data) and res['role'] == 'Backend Developer'):
       return FAILED
 
@@ -68,7 +68,7 @@ def delete_test():
     res = h.delete('/user/10001')
     if res.status_code != 200:
       return FAILED
-    res_data = json.dumps(res.text)
+    res_data = json.loads(res.text)
     if not is_user(res_data):
       return FAILED
     return SUCESS
@@ -80,7 +80,7 @@ def find_test():
     res = h.get('/user/10001')
     if res.status_code != 200:
       return FAILED
-    res_data = json.dumps(res.text)
+    res_data = json.loads(res.text)
     if not is_user(res_data):
       return FAILED
 

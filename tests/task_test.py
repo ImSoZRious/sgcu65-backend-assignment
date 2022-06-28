@@ -10,13 +10,13 @@ def is_task(data):
 
 def create_test():
   try:
-    user_payload = {
+    task_payload = {
       'name': 'assignment',
       'content': 'Backend assignment',
       'status': 'in progress',
       'deadline': '2022-07-02 00:00:00'
     }
-    res = h.post('/task', json.dumps(user_payload))
+    res = h.post('/task', task_payload)
 
     if res.status_code != 200:
       return FAILED
@@ -36,7 +36,7 @@ def read_test():
     res = h.get('/task')
     if res.status_code != 200:
       return FAILED
-    res_data = json.dumps(res.text)
+    res_data = json.loads(res.text)
     if len(res_data) < 1:
       return FAILED
     test_data = res_data[0]
@@ -52,10 +52,10 @@ def update_test():
     new_data = {
       'deadline': '2022-07-30 00:00:00'
     }
-    res = h.put('/task/10001', json.dumps(new_data))
+    res = h.put('/task/10001', new_data)
     if res.status_code != 200:
       return FAILED
-    res_data = json.dumps(res.text)
+    res_data = json.loads(res.text)
     if not (is_task(res_data) and res['deadline'] == '2022-07-30 00:00:00'):
       return FAILED
 
@@ -68,7 +68,7 @@ def delete_test():
     res = h.delete('/task/10001')
     if res.status_code != 200:
       return FAILED
-    res_data = json.dumps(res.text)
+    res_data = json.loads(res.text)
     if not is_task(res_data):
       return FAILED
     return SUCESS
@@ -80,7 +80,7 @@ def find_test():
     res = h.get('/task/10001')
     if res.status_code != 200:
       return FAILED
-    res_data = json.dumps(res.text)
+    res_data = json.loads(res.text)
     if not is_task(res_data):
       return FAILED
 
