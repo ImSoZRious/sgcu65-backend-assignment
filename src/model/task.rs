@@ -25,6 +25,7 @@ pub struct NewTask {
 
 #[derive(Deserialize)]
 pub struct UpdateTask {
+  #[serde(default)]
   pub id: i32,
   #[serde(default)]
   pub name: Option<String>,
