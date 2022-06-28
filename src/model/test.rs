@@ -49,7 +49,7 @@ fn create_user() {
     role: s!("Frontend Developer"),
   };
 
-  let _res = User::create(new_user, &conn).unwrap();
+  let _user = User::create(new_user, &conn).unwrap();
 }
 
 #[test]
@@ -64,22 +64,23 @@ fn update_user() {
     role: None,
   };
 
-  let _res = User::update(update_info, &conn).unwrap();
+  let _result = User::update(update_info, &conn).unwrap();
 }
 
 #[test]
 fn delete_user() {
   let conn = get_db_con();
 
-  let delete_id = 2;
+  let delete_id = 3;
 
-  let _ = User::delete(delete_id, &conn).unwrap();
+  let _del_count = User::delete(delete_id, &conn).unwrap();
 }
 
+#[test]
 fn find_user() {
   let conn = get_db_con();
 
   let user_id = 3;
 
-  let _ = User::find(user_id, &conn).unwrap();
+  let _user = User::find(user_id, &conn).unwrap();
 }
