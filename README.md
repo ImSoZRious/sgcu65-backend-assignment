@@ -14,7 +14,7 @@ cargo run
 ## [Program exit with code 3](https://github.com/diesel-rs/diesel/discussions/2947)
 
 # TODO
-- [ ] use functor
+- [ ] use functor for api
 - [ ] find task by name
 - [ ] find user by firstname, lastname
 - [ ] assign task to user
