@@ -1,126 +1,91 @@
 # Table of Contents
 - [Table of Contents](#table-of-contents)
+- [General](#general)
 - [User](#user)
   - [Create task](#create-task)
   - [Read all user](#read-all-user)
   - [Update user](#update-user)
   - [Delete user](#delete-user)
   - [Find user](#find-user)
+  - [Search user](#search-user)
 - [Task](#task)
   - [Create task](#create-task-1)
   - [Read all task](#read-all-task)
   - [Update task](#update-task)
   - [Delete task](#delete-task)
   - [Find task](#find-task)
+  - [Search Task](#search-task)
+  - [Assign Task](#assign-task)
 - [Addtional Idea: Role (enum)](#addtional-idea-role-enum)
-- [Timestamp](#timestamp)
-- [ID](#id)
+- [Object](#object)
+  - [User Object](#user-object)
+  - [NewUser Object](#newuser-object)
+  - [UpdateUser Object](#updateuser-object)
+  - [Task Object](#task-object)
+  - [NewTask Object](#newtask-object)
+  - [UpdateTask Object](#updatetask-object)
+  - [AssignTask Object](#assigntask-object)
+  - [Timestamp](#timestamp)
+  - [ID](#id)
 
+# General
+- Post method only accept json content type
+- if payload isn't specified, no payload is needed or optional.
+- if return isn't specified, no information is returned back. (Status code still told the status of the request)
 # User
 ## Create task
 __POST /user__ \
-Create user payload.
-```
-{
-  email: string,
-  firstname: string,
-  lastname: string,
-  role: string
-}
-```
-This method, if successful, returns same object that is sent with id of the user.
-```
-{
-  id: ID,
-  email: string,
-  firstname: string,
-  lastname: string,
-  role: string
-}
-```
+Create user payload. \
+Payload: [NewUser](#newuser-object) \
+Return: [User](#user-object)
 ## Read all user
 __GET /user__ \
-Get all task.
+Get all user \
+Return: [User](#user-object)[]
 ## Update user
 __PUT /user/:id__ \
-Update user object. At least one of the optional field is required.
-```
-{
-  email?: string,
-  firstname?: string,
-  lastname?: string,
-  role?: string
-}
-```
-This method, if successful, returns with status code 200
+Update user object.
+Payload: [UpdateUser](#updateuser-object)
 ## Delete user
 __DELETE /user/:id__
 
 ## Find user
-__GET /user/:id__
-```
-{
-  id: ID,
-  email: string,
-  firstname: string,
-  lastname: string,
-  role: string
-}
-```
+__GET /user/:id__ \
+Return: [User](#user-object)
+
+## Search user
+__GET /user/search?(firstname={firstname})(&)(lastname={lastname})__ \
+One of its attribute need to be filled \
+Return: [User](#user-object)[]
 
 # Task
 ## Create task
 __POST /task__ \
 Create task payload.
-```
-{
-  name: string,
-  content: string,
-  status: string,
-  deadline: Timestamp
-}
-```
-This method, if successful, returns same object that is sent with id of the task.
-```
-{
-  id: ID,
-  name: string,
-  content: string,
-  status: string,
-  deadline: Timestamp
-}
-```
+Payload: [NewTask](#newtask-object)
+Return: [Task](#task-object)
 ## Read all task
 __GET /task__ \
 Get all task.
+Return: [Task](#task-object)[#task-object]
 ## Update task
 __PUT /task/:id__ \
-Update task. At least one of the optional field is required.
-```
-{
-  name?: string,
-  content?: string,
-  status?: string,
-  deadline?: Timestamp
-}
-```
-This method, if successful, returns with status code 200
+Payload: [UpdateTask](#update-task)
 
 ## Delete task
 __DELETE /task/:id__ \
 Delete task.
 ## Find task
 __GET /task/:id__ \
-return 404 if not found.
-```
-{
-  id: ID,
-  name: string,
-  content: string,
-  status: string,
-  deadline: Timestamp
-}
-```
+Return: [Task](#task-object)
+
+## Search Task
+__GET /task/search?name={name}__ \
+Return: [Task](#task-object)[]
+
+## Assign Task
+__POST /assign_task__ \
+Payload: [AssignTask](#assign-task-object)
 
 # Addtional Idea: Role (enum)
 making role as enum make 
@@ -129,8 +94,77 @@ making role as enum make
 - Backend Developer
 - Project Manager
 
-# Timestamp
+# Object
+## User Object
+```
+{
+  id: ID,
+  email: string,
+  firstname: string,
+  lastname: string,
+  role: string
+}
+```
+## NewUser Object
+```
+{
+  email: string,
+  firstname: string,
+  lastname: string,
+  role: string
+}
+```
+## UpdateUser Object
+At least one of the optional field is required.
+```
+{
+  email?: string,
+  firstname?: string,
+  lastname?: string,
+  role?: string
+}
+```
+## Task Object
+```
+{
+  id: ID,
+  name: string,
+  content: string,
+  status: string,
+  deadline: Timestamp
+}
+```
+
+## NewTask Object
+```
+{
+  name: string,
+  content: string,
+  status: string,
+  deadline: Timestamp
+}
+```
+## UpdateTask Object
+At least one of the optional field is required.
+```
+{
+  name?: string,
+  content?: string,
+  status?: string,
+  deadline?: Timestamp
+}
+```
+## AssignTask Object
+```
+{
+  name: string,
+  content: string,
+  status: string,
+  deadline: Timestamp
+}
+```
+## Timestamp
 Timestamp is string which formatted as 'YYYY-MM-DD HH:MM:SS' such as '2022-12-31 15:45:10'.
 
-# ID
+## ID
 ID is 5-digit number string start from "10000" - "99999"
