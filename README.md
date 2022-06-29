@@ -1,7 +1,7 @@
 # Table of Contents
 - [Table of Contents](#table-of-contents)
 - [ชื่อ - นามสกุลผู้สมัคร](#ชื่อ---นามสกุลผู้สมัคร)
-- [How to run](#how-to-run)
+- [How to start](#how-to-start)
   - [Rust toolchain setup](#rust-toolchain-setup)
   - [Compile and run](#compile-and-run)
 - [Troubleshoot](#troubleshoot)
@@ -24,7 +24,7 @@
 # ชื่อ - นามสกุลผู้สมัคร
 ปัณณวิชญ์ โลหะนิมิต
 
-# How to run
+# How to start
 rust toolchain is required.
 ## Rust toolchain setup
 [Rustup](https://www.rust-lang.org/learn/get-started)
@@ -42,6 +42,9 @@ cargo run
 - [ ] find task by name
 - [ ] find user by firstname, lastname
 - [ ] assign task to user
+- [ ] add role enum
+- [ ] add properly do timestamp
+- [ ] rewrite api specification
 - [ ] Redesign database for team
 - [ ] Add DB Design
 - [ ] Rewrite api specification
@@ -118,7 +121,7 @@ cargo run
 ### Authentication
 
 ```markdown
-สามารถเข้าสู่ระบบได้ (โดยใช้ email, รหัสผ่าน)
+- [ ] สามารถเข้าสู่ระบบได้ (โดยใช้ email, รหัสผ่าน)
 ```
 
 ### Authorization
