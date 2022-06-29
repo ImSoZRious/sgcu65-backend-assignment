@@ -8,6 +8,7 @@
   - [Delete user](#delete-user)
   - [Find user](#find-user)
   - [Search user](#search-user)
+  - [Read user task](#read-user-task)
 - [Task](#task)
   - [Create task](#create-task-1)
   - [Read all task](#read-all-task)
@@ -16,6 +17,7 @@
   - [Find task](#find-task)
   - [Search Task](#search-task)
   - [Assign Task](#assign-task)
+  - [Read task owner](#read-task-owner)
 - [Addtional Idea: Role (enum)](#addtional-idea-role-enum)
 - [Object](#object)
   - [User Object](#user-object)
@@ -58,6 +60,10 @@ __GET /user/search?(firstname={firstname})(&)(lastname={lastname})__ \
 One of its attribute need to be filled \
 Return: [User](#user-object)[]
 
+## Read user task
+__GET /user/:id/task__ \
+Return: [task](#task-object)[]
+
 # Task
 ## Create task
 __POST /task__ \
@@ -85,7 +91,11 @@ Return: [Task](#task-object)[]
 
 ## Assign Task
 __POST /assign_task__ \
-Payload: [AssignTask](#assign-task-object)
+Payload: [AssignTask](#assigntask-object)
+
+## Read task owner
+__GET /task/:id/owner__ \
+Return: [User](#user-object)[]
 
 # Addtional Idea: Role (enum)
 making role as enum make 
@@ -93,6 +103,8 @@ making role as enum make
 - Frontend Developer
 - Backend Developer
 - Project Manager
+
+
 
 # Object
 ## User Object
@@ -154,17 +166,16 @@ At least one of the optional field is required.
   deadline?: Timestamp
 }
 ```
+
 ## AssignTask Object
 ```
 {
-  name: string,
-  content: string,
-  status: string,
-  deadline: Timestamp
+  user_id: ID,
+  task_id: ID
 }
 ```
 ## Timestamp
 Timestamp is string which formatted as 'YYYY-MM-DD HH:MM:SS' such as '2022-12-31 15:45:10'.
 
 ## ID
-ID is 5-digit number string start from "10000" - "99999"
+ID is 5-digit integer start from "10000" - "99999"
