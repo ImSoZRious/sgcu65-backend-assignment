@@ -1,6 +1,30 @@
+# Table of Contents
+- [Table of Contents](#table-of-contents)
+- [ชื่อ - นามสกุลผู้สมัคร](#ชื่อ---นามสกุลผู้สมัคร)
+- [How to run](#how-to-run)
+  - [Rust toolchain setup](#rust-toolchain-setup)
+  - [Compile and run](#compile-and-run)
+- [Troubleshoot](#troubleshoot)
+  - [Program exit with code 3](#program-exit-with-code-3)
+- [TODO](#todo)
+- [โจทย์](#โจทย์)
+  - [รายละเอียดโจทย์](#รายละเอียดโจทย์)
+  - [งานของคุณ](#งานของคุณ)
+    - [รายละเอียดของ Feature (Minimum Requirement)](#รายละเอียดของ-feature-minimum-requirement)
+    - [User](#user)
+    - [Task](#task)
+    - [Other](#other)
+    - [รายละเอียดของ Feature (Optional)](#รายละเอียดของ-feature-optional)
+    - [Team](#team)
+    - [Authentication](#authentication)
+    - [Authorization](#authorization)
+  - [การเก็บข้อมูล (Minimum)](#การเก็บข้อมูล-minimum)
+- [API Specification](#api-specification)
+- [DB Design](#db-design)
+# ชื่อ - นามสกุลผู้สมัคร
 ปัณณวิชญ์ โลหะนิมิต
 
-# Setup
+# How to run
 rust toolchain is required.
 ## Rust toolchain setup
 [Rustup](https://www.rust-lang.org/learn/get-started)
@@ -19,6 +43,8 @@ cargo run
 - [ ] find user by firstname, lastname
 - [ ] assign task to user
 - [ ] Redesign database for team
+- [ ] Add DB Design
+- [ ] Rewrite api specification
 - [ ] Team (CRUD)
 - [ ] Team Find
 - [ ] Team assign user
@@ -26,62 +52,10 @@ cargo run
 - [ ] TBD
 - [ ] Docker if have excess time
 
-
-# SGCU65 Backend Recruitment
-
-แบบทดสอบทางวิศวกรรมซอฟต์แวร์ เพื่อสรรหาบุคคลเข้ารับตำแหน่ง Backend Developer ประจำปีการศึกษา 2565
-
-# สารบัญ
-
-- [คำแนะนำ](#คำแนะนำ)
-- [โจทย์](#โจทย์)
-- [Note](#Note)
-- [Tips](#Tips)
-
-# คำแนะนำ
-
-1. แบบทดสอบนี้ถูกออกแบบมาให้ทำเสร็จภายใน **120 ชั่วโมง (5 วัน)** อย่างไรก็ตามคณะกรรมการฯ จะให้เวลาในการทำทั้งหมด **168 ชั่วโมง (7 วัน)** หลังจากที่น้อง ๆ ได้รับบททดสอบนี้แล้ว เนื่องจากผู้สมัครบางท่านอาจจะมีช่วงเวลาที่สะดวกแตกต่างกันไป
-
-2. ให้ผู้สมัครทำการ Fork Repository [isd-sgcu/sgcu65-backend-recruitment](https://github.com/isd-sgcu/sgcu65-backend-recruitment) โดยใช้ Github Account ของผู้สมัครเอง โดยโจทย์แต่ข้อจะอยู่ในโฟลเดอร์ `Problem #<หมายเลขโจทย์>`
-
-3. ในการส่งคำตอบ ให้ผู้สมัครอัพโหลดไฟล์ที่เกี่ยวข้องกับโจทย์ข้อนั้นทั้งหมดขึ้นไปบน Repository ที่ผู้สมัครได้ทำการ Fork ไว้ พร้อมจัดระเบียบไฟล์เหล่านั้นให้เรียบร้อย
-
-4. พึงระลึกไว้เสมอว่าสิ่งเหล่านี้มีความสำคัญในการพัฒนาซอฟต์แวร์จริง ๆ ซึ่งมีผลต่อการพิจารณาผู้สมัคร ดังนี้
-
-   - Code Readability - โค้ดอ่านรู้เรื่อง กระชับ เข้าใจง่าย
-   - Commit Message Readability - ข้อความใน commit มีความหมาย
-
-5. กรุณาอ่านรายละเอียดโจทย์และทำความเข้าใจให้เรียบร้อยก่อนทำโจทย์ข้อนั้น ๆ หากมีข้อสงสัยประการใดผู้สมัครสามารถส่งอีเมลไปที่ isd.sgcu64@gmail.com เพื่อสอบถามได้ตลอดเวลา
-
-6. หากมีไอเดียเพิ่มเติมจากที่โจทย์ระบุไว้ ผู้สมัครสามารถระบุไอเดียนั้นลงใปในส่วนของคำตอบ โดยเขียนด้วยรูปแบบดังนั้น
-
-   ```py
-   # Addtional Idea: <ไอเดียเพิ่มเติมของผู้สมัคร>
-   ```
-
-7. หากมีสมมติฐานเพิ่มเติมที่โจทย์ไม่ได้ให้ข้อมูลไว้ ผู้สมัครสามารถระบุสมมติฐานนั้นลงใปในส่วนของคำตอบ โดยเขียนด้วยรูปแบบดังนั้น
-
-   ```py
-   # Assumption: <สมมติฐานของผู้สมัคร>
-   ```
-
-8. การตรวจคำตอบจะยึดจาก `commit สุดท้ายใน branch master` ก่อนเวลาสิ้นสุดแบบทดสอบที่ระบุไว้ในอีเมลที่ผู้สมัครได้รับเท่านั้น โปรดพึงระลึกไว้เสมอว่า `การตรงต่อเวลา` เป็นคุณสมบัติที่สำคัญอย่างหนึ่งต่อการเป็นวิศวกรซอฟต์แวร์ที่ดี
-
-9. สามารถค้นหาข้อมูลเพิ่มเติมจากช่องทางใดก็ได้ ในระหว่างการทำแบบทดสอบ
-
-10. การตัดสินของคณะกรรมการฯ ถือเป็นที่สุด
-
 # โจทย์
 
 [//]: # "- [Minimum Requirement](#คำแนะนำ)"
 [//]: # "- [Optional Requirement](#รายละเอียดของ Feature (Minimum Requirement))"
-
-## วัตถุประสงค์
-
-- วัดความรู้พื้นฐานในการออกแบบ API Endpoint
-- วัดความรู้พื้นฐานในการเลือกใช้ HTTP Methods, Status Codes
-- เพื่อทดสอบการวาง project structure
-- เพื่อประเมินความสามารถในการแก้ปัญหาของผู้สมัคร
 
 ## รายละเอียดโจทย์
 
@@ -121,8 +95,7 @@ cargo run
 ### Other
 
 ```markdown
-สามารถ assign งานให้ user ได้
-โดยที่ user 1 คนสามารถรับได้หลายอันและ task 1 อันสามารถมีผู้รับผิดชอบได้หลายคน
+- สามารถ assign งานให้ user ได้โดยที่ user 1 คนสามารถรับได้หลายอันและ task 1 อันสามารถมีผู้รับผิดชอบได้หลายคน
 ```
 
 ### รายละเอียดของ Feature (Optional)
@@ -139,7 +112,7 @@ cargo run
 - สามารถค้นหา Team ด้วยชื่อ หรือ id ได้
 - สามารถ assign User เข้าทีมได้
 - สามารถ assign Task ให้กับ team ได้
-  - เปลี่ยนจากการ assign task ให้ user เป็นการ assign task ให้ team แทน
+- เปลี่ยนจากการ assign task ให้ user เป็นการ assign task ให้ team แทน
 ```
 
 ### Authentication
@@ -151,7 +124,15 @@ cargo run
 ### Authorization
 
 ```markdown
-สามารถแบ่งแยก user ออกเป็น 2 role คือ User กับ Admin - User - สามารถ login ด้วย username และ password ได้ - สามารถแก้ไข password ของตนเองได้ - สามารถดูข้อมูลของตนเองได้ (นั่นคือ API มีวิธีระบุตัวตนว่าใครเป็นคนยิง API) - **ไม่สามารถ** Create Update Delete Read ได้ - Admin - ทำสิ่งที่ employee ทำได้ - สามารถ สิ่งที่ระบุไว้ 5 ข้อด้านบนได้ (ให้เฉพาะ HR ใช้งานเท่านั้น)
+สามารถแบ่งแยก user ออกเป็น 2 role คือ User กับ Admin 
+- User
+   - สามารถ login ด้วย username และ password ได้
+   - สามารถแก้ไข password ของตนเองได้ 
+   - สามารถดูข้อมูลของตนเองได้ (นั่นคือ API มีวิธีระบุตัวตนว่าใครเป็นคนยิง API) 
+   - **ไม่สามารถ** Create Update Delete Read ได้ 
+- Admin 
+   - ทำสิ่งที่ employee ทำได้ 
+   - สามารถ สิ่งที่ระบุไว้ 5 ข้อด้านบนได้ (ให้เฉพาะ HR ใช้งานเท่านั้น)
 ```
 
 ## การเก็บข้อมูล (Minimum)
@@ -179,32 +160,10 @@ Task
 Team
 
 ```markdown
-    - name
+- name
 ```
 
-# Note
-
-- ระยะเวลาของการทำ assignment เริ่มนับจากวันที่ผู้สมัครได้รับ email จากทาง อบจ
-- ในการทำ assignment นี้ผู้สมัครสามารถเลือกใช้ `framework` `library` `ภาษา` ต่างๆตามที่ถนัดได้เลย (ขอแค่ทำงานตามโจทย์ที่กำหนดให้ได้ก็พอ)
-- สิ่งที่ผู้สมัครต้องส่งมา**อย่างน้อย**เพื่อที่จะเข้าสู่รอบสัมภาษณ์คือ **minimum requirement**
-
-## การส่งงาน
-
-1. ให้ผู้สมัครเขียน **ชื่อ-นามสกุล** assignment ไว้ที่ **README.md** ด้วย (แปะไว้ตรงไหนก็ได้ให้รู้ว่าเป็นของใครก็พอ)
-
-2. อัพโหลด source code ทั้งหมดและขอให้เขียนวิธีการ start service มาด้วยในไฟล์ README.md โดยเขียนด้วยรูปแบบดังนี้
-
-   ```
-   ## How To Run
-   <วิธีการเปิดเว็บ>
-   ```
-
-# Tips
-
-- [API คือ?](https://medium.com/skooldio/api-คืออะไร-264ee4186f2c)
-- [Framework คือ?](https://medium.com/@FIEHTZ/framework-คืออะไร-f33da15f5fb5)
-- [Backend Framework มีอะไรบ้าง?](https://medium.com/javarevisited/10-best-backend-frameworks-for-web-development-8d19e337f774)
-- [MVC Concept คือ?](https://medium.com/computer-science-kmitl/การเขียนโปรแกรมแบบ-mvc-คืออะไร-57112d932dde)
-- [RDBMS](https://devjourneys.com/2020/04/15/ฐานข้อมูลเบื้องต้น/)
-- [SQL & NoSQL](https://medium.com/@todspolwonhchomphu/sql-คืออะไร-และ-nosql-คืออะไร-561c750dbe4d)
-- [SQL vs NoSQL](https://phuri.medium.com/nosql-คืออะไร-ต่างจาก-rdbms-หรือ-sql-database-อย่างไร-dd8ac91a4197)
+# API Specification
+TODO
+# DB Design
+TODO
