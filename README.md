@@ -39,12 +39,12 @@ cargo run
 
 # TODO
 - [x] use functor for api
-- [ ] find task by name
-- [ ] find user by firstname, lastname
+- [x] find task by name
+- [x] find user by firstname, lastname
 - [ ] assign task to user
 - [ ] add role enum
 - [ ] add properly do timestamp
-- [ ] rewrite api specification
+- [x] rewrite api specification
 - [ ] Redesign database for team
 - [ ] Add DB Design
 - [ ] Rewrite api specification
@@ -166,7 +166,6 @@ Team
 - name
 ```
 
-# API Specification
-TODO
+# [API Specification](/tests/README.md)
 # DB Design
 TODO
