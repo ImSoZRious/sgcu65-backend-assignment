@@ -1,68 +1,84 @@
-use super::super::db::DbConn;
 use super::super::model::user::{NewUser, UpdateUser, User};
 
 use super::Json;
 
-use rocket::http::Status;
+use super::convert_error;
 
-#[get("/", rank = 2)]
-pub async fn get(conn: DbConn) -> Result<Json, Status> {
-  let result = User::get_all(&conn);
+use actix_web::{web, HttpResponse, Responder, Scope};
 
-  match result {
-    Ok(users) => match serde_json::to_string(&users) {
-      Ok(user_string) => Ok(Json(user_string)),
-      Err(_) => Err(Status::InternalServerError),
-    },
-    Err(_) => Err(Status::InternalServerError),
-  }
+use crate::db::Pool;
+
+async fn get(pool: web::Data<Pool>) -> impl Responder {
+  // "resource"
+  let conn = pool.get().expect("Cannot get connection");
+
+  let result = User::get_all(&conn).map_err(convert_error);
+
+  result
+    .and_then(|user| serde_json::to_string(&user).map_err(convert_error))
+    .map(|user_string| Json(user_string))
 }
 
-#[post("/", format = "application/json", data = "<user>")]
-pub async fn create(user: NewUser, conn: DbConn) -> Result<Json, Status> {
-  let result = User::create(&user, &conn);
+async fn create(body: web::Json<NewUser>, pool: web::Data<Pool>) -> impl Responder {
+  let user = body.0;
+  let conn = pool.get().expect("Cannot get connection");
 
-  match result {
-    Ok(users) => match serde_json::to_string(&users) {
-      Ok(user_string) => Ok(Json(user_string)),
-      Err(_) => Err(Status::InternalServerError),
-    },
-    Err(_) => Err(Status::InternalServerError),
-  }
+  let result = User::create(&user, &conn).map_err(convert_error);
+
+  result
+    .and_then(|users| serde_json::to_string(&users).map_err(convert_error))
+    .map(|user_string| Json(user_string))
+    .map_err(convert_error)
 }
 
-#[put("/<id>", format = "application/json", data = "<user>")]
-pub async fn update(mut user: UpdateUser, conn: DbConn, id: i32) -> Status {
+async fn update(
+  body: web::Json<UpdateUser>,
+  path: web::Path<(i32,)>,
+  pool: web::Data<Pool>,
+) -> impl Responder {
+  let mut user = body.0;
+  let id = path.into_inner().0;
+  let conn = pool.get().expect("Cannot get connection");
   user.id = id;
 
   let result = User::update(&user, &conn);
 
   match result {
-    Ok(_) => Status::Ok,
-    Err(_) => Status::InternalServerError,
+    Ok(_) => HttpResponse::Ok(),
+    Err(_) => HttpResponse::InternalServerError(),
   }
 }
 
-#[delete("/<id>")]
-pub async fn delete(id: i32, conn: DbConn) -> Status {
+async fn delete(path: web::Path<(i32,)>, pool: web::Data<Pool>) -> impl Responder {
+  let conn = pool.get().expect("Cannot get connection");
+  let id = path.into_inner().0;
   let result = User::delete(id, &conn);
 
   match result {
-    Ok(1) => Status::Ok,
-    Ok(_) => Status::NotFound,
-    Err(_) => Status::InternalServerError,
+    Ok(1) => HttpResponse::Ok(),
+    Ok(_) => HttpResponse::NotFound(),
+    Err(_) => HttpResponse::InternalServerError(),
   }
 }
 
-#[get("/<id>", rank = 1)]
-pub async fn find(id: i32, conn: DbConn) -> Result<Json, Status> {
-  let result = User::find(id, &conn);
+async fn find(path: web::Path<(i32,)>, pool: web::Data<Pool>) -> impl Responder {
+  let conn = pool.get().expect("Cannot get connection");
 
-  match result {
-    Ok(user) => match serde_json::to_string(&user) {
-      Ok(user_string) => Ok(Json(user_string)),
-      Err(_) => Err(Status::InternalServerError),
-    },
-    Err(_) => Err(Status::InternalServerError),
-  }
+  let id = path.into_inner().0;
+
+  let result = User::find(id, &conn).map_err(convert_error);
+
+  result
+    .and_then(|user| serde_json::to_string(&user).map_err(convert_error))
+    .map(|user_string| Json(user_string))
+    .map_err(convert_error)
+}
+
+pub fn get_scope() -> Scope {
+  web::scope("/user")
+    .route("", web::get().to(get))
+    .route("/{id}", web::get().to(find))
+    .route("", web::post().to(create))
+    .route("/{id}", web::delete().to(delete))
+    .route("/{id}", web::put().to(update))
 }

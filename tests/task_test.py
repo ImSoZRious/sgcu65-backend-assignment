@@ -66,7 +66,7 @@ def update_test():
 
 def delete_test():
   try:
-    res = h.delete('/task/' +  + create_id)
+    res = h.delete('/task/' + create_id)
     if res.status_code != 200:
       return FAILED
     return SUCESS
