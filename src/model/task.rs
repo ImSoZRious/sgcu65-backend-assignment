@@ -37,9 +37,9 @@ pub struct UpdateTask {
   pub deadline: Option<String>,
 }
 
-#[derive(Default)]
-pub struct TaskQuery<'a> {
-  pub name: Option<&'a str>,
+#[derive(Default, Deserialize, Debug)]
+pub struct TaskQuery {
+  pub name: Option<String>,
 }
 
 impl Task {
@@ -104,7 +104,7 @@ impl Task {
       filter.push(format!("name LIKE '{}%'", name));
     }
 
-    let filter_string = filter.join(", ");
+    let filter_string = filter.join(" AND ");
 
     let query_string = format!(
       "SELECT * \
@@ -114,5 +114,20 @@ impl Task {
     );
 
     diesel::sql_query(query_string).load(conn)
+  }
+}
+
+impl UpdateTask {
+  pub fn all_none(&self) -> bool {
+    self.name.is_none()
+      && self.content.is_none()
+      && self.status.is_none()
+      && self.deadline.is_none()
+  }
+}
+
+impl TaskQuery {
+  pub fn all_none(&self) -> bool {
+    self.name.is_none()
   }
 }

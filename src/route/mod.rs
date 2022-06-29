@@ -12,6 +12,7 @@ use actix_web::error::ResponseError;
 #[derive(Debug)]
 enum MyError {
   InternalServerError,
+  InvalidFormat,
 }
 
 impl std::fmt::Display for MyError {
@@ -21,6 +22,7 @@ impl std::fmt::Display for MyError {
       "{}",
       match *self {
         MyError::InternalServerError => "Interal Server Error",
+        MyError::InvalidFormat => "Invalid Format",
       }
     )?;
 
@@ -38,6 +40,7 @@ impl ResponseError for MyError {
   fn status_code(&self) -> actix_web::http::StatusCode {
     match *self {
       MyError::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
+      MyError::InvalidFormat => StatusCode::BAD_REQUEST,
     }
   }
 }

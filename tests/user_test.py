@@ -86,9 +86,32 @@ def find_test():
   except:
     return CONNECTION_ERROR
 
+def query_test():
+  try:
+    firstname = "Fin"
+    lastname = "N"
+    url1 = '/user/search?firstname={}'.format(firstname)
+    url2 = '/user/search?lastname={}'.format(lastname)
+    url3 = '/user/search?firstname={}&lastname={}'.format(firstname, lastname)
+
+    for url in [url1, url2, url3]:
+      res = h.get(url)
+      if res.status_code != 200:
+        return FAILED
+      res_data = json.loads(res.text)
+      if len(res_data) == 0:
+        continue
+      res_data = res_data[0]
+      if not is_user(res_data):
+        return FAILED
+
+    return SUCESS
+  except:
+    return CONNECTION_ERROR
+
 def user_test():
-  tests_name = ['Create', 'Read', 'Update', 'Find', 'Delete']
-  tests_func = [create_test, read_test, update_test, find_test, delete_test]
+  tests_name = ['Create', 'Read', 'Update', 'Find', 'Query', 'Delete']
+  tests_func = [create_test, read_test, update_test, find_test, query_test, delete_test]
 
   eval_func = {0: h.log_success, 1: h.log_failure, 2: h.log_connection_error}
 

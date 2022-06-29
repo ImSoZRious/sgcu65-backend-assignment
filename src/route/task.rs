@@ -1,6 +1,6 @@
-use super::super::model::task::{NewTask, Task, UpdateTask};
+use super::super::model::task::{NewTask, Task, TaskQuery, UpdateTask};
 
-use super::Json;
+use super::{Json, MyError};
 
 use super::convert_error;
 
@@ -27,7 +27,6 @@ async fn create(body: web::Json<NewTask>, pool: web::Data<Pool>) -> impl Respond
   result
     .and_then(|tasks| serde_json::to_string(&tasks).map_err(convert_error))
     .map(|task_string| Json(task_string))
-    .map_err(convert_error)
 }
 
 async fn update(
@@ -35,6 +34,10 @@ async fn update(
   path: web::Path<(i32,)>,
   pool: web::Data<Pool>,
 ) -> impl Responder {
+  if body.all_none() {
+    return HttpResponse::BadRequest();
+  }
+
   let mut task = body.0;
   let id = path.into_inner().0;
   let conn = pool.get().expect("Cannot get connection");
@@ -70,14 +73,28 @@ async fn find(path: web::Path<(i32,)>, pool: web::Data<Pool>) -> impl Responder 
   result
     .and_then(|task| serde_json::to_string(&task).map_err(convert_error))
     .map(|task_string| Json(task_string))
-    .map_err(convert_error)
+}
+
+async fn search(query: web::Query<TaskQuery>, pool: web::Data<Pool>) -> impl Responder {
+  if query.0.all_none() {
+    return Err(MyError::InvalidFormat);
+  }
+
+  let conn = pool.get().expect("Cannot get connection");
+
+  let result: Result<Vec<Task>, MyError> = Task::query(&query.0, &conn).map_err(convert_error);
+
+  result
+    .and_then(|task| serde_json::to_string(&task).map_err(convert_error))
+    .map(|task_string| Json(task_string))
 }
 
 pub fn get_scope() -> Scope {
   web::scope("/task")
     .route("", web::get().to(get))
-    .route("/{id}", web::get().to(find))
     .route("", web::post().to(create))
-    .route("/{id}", web::delete().to(delete))
+    .route("/search", web::get().to(search))
+    .route("/{id}", web::get().to(find))
     .route("/{id}", web::put().to(update))
+    .route("/{id}", web::delete().to(delete))
 }

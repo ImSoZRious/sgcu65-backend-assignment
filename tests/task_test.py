@@ -83,9 +83,25 @@ def find_test():
   except:
     return CONNECTION_ERROR
 
+def query_test():
+  try:
+    name = 'assignment'
+    url = '/task/search?name={}'.format(name)
+
+    res = h.get(url)
+    if res.status_code != 200:
+      return FAILED
+    res_data = json.loads(res.text)
+    if len(res_data) > 0 and not is_task(res_data[0]):
+      return FAILED
+
+    return SUCESS
+  except:
+    return CONNECTION_ERROR
+
 def task_test():
-  tests_name = ['Create', 'Read', 'Update', 'Find', 'Delete']
-  tests_func = [create_test, read_test, update_test, find_test, delete_test]
+  tests_name = ['Create', 'Read', 'Update', 'Find', 'Query', 'Delete']
+  tests_func = [create_test, read_test, update_test, find_test, query_test, delete_test]
 
   eval_func = {0: h.log_success, 1: h.log_failure, 2: h.log_connection_error}
 

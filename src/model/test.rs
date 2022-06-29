@@ -103,7 +103,7 @@ fn find_user_by_attribute() {
 
   let q = UserQuery {
     firstname: None,
-    lastname: Some(user1_lastname),
+    lastname: Some(s!(user1_lastname)),
   };
 
   let _user = User::query(&q, &conn).unwrap();
@@ -220,7 +220,7 @@ fn find_task_by_name() {
   let task_name = "ComProg";
 
   let q = TaskQuery {
-    name: Some(task_name),
+    name: Some(s!(task_name)),
   };
 
   let _task = Task::query(&q, &conn).unwrap();

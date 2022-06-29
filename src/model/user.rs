@@ -39,10 +39,10 @@ pub struct UpdateUser {
   pub role: Option<String>,
 }
 
-#[derive(Default)]
-pub struct UserQuery<'a> {
-  pub firstname: Option<&'a str>,
-  pub lastname: Option<&'a str>,
+#[derive(Default, Deserialize, Debug)]
+pub struct UserQuery {
+  pub firstname: Option<String>,
+  pub lastname: Option<String>,
 }
 
 impl User {
@@ -110,7 +110,7 @@ impl User {
       filter.push(format!("lastname LIKE '{}%'", lastname));
     }
 
-    let filter_string = filter.join(", ");
+    let filter_string = filter.join(" AND ");
 
     let query_string = format!(
       "SELECT * \
@@ -120,5 +120,20 @@ impl User {
     );
 
     diesel::sql_query(query_string).load(conn)
+  }
+}
+
+impl UpdateUser {
+  pub fn all_none(&self) -> bool {
+    self.email.is_none()
+      && self.firstname.is_none()
+      && self.lastname.is_none()
+      && self.role.is_none()
+  }
+}
+
+impl UserQuery {
+  pub fn all_none(&self) -> bool {
+    self.firstname.is_none() && self.lastname.is_none()
   }
 }
