@@ -37,6 +37,11 @@ pub struct UpdateTask {
   pub deadline: Option<String>,
 }
 
+#[derive(Default)]
+pub struct TaskQuery<'a> {
+  pub name: Option<&'a str>,
+}
+
 impl Task {
   pub fn create(task: &NewTask, conn: &PgConnection) -> Result<Task, Error> {
     diesel::insert_into(tasks::table)
@@ -91,5 +96,23 @@ impl Task {
 
   pub fn find(task_id: i32, conn: &PgConnection) -> Result<Task, Error> {
     all_tasks.find(task_id).first(conn)
+  }
+
+  pub fn query(query: &TaskQuery, conn: &PgConnection) -> Result<Vec<Task>, Error> {
+    let mut filter: Vec<String> = Vec::new();
+    if let Some(name) = &query.name {
+      filter.push(format!("name LIKE '{}%'", name));
+    }
+
+    let filter_string = filter.join(", ");
+
+    let query_string = format!(
+      "SELECT * \
+    FROM tasks \
+    WHERE {}",
+      filter_string
+    );
+
+    diesel::sql_query(query_string).load(conn)
   }
 }

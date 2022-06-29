@@ -4,8 +4,8 @@
 #[allow(unused_imports)]
 use std::env;
 
-use super::task::{NewTask, Task, UpdateTask};
-use super::user::{NewUser, UpdateUser, User};
+use super::task::{NewTask, Task, TaskQuery, UpdateTask};
+use super::user::{NewUser, UpdateUser, User, UserQuery};
 
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
@@ -89,6 +89,25 @@ fn find_user() {
   let user_id = 3;
 
   let _user = User::find(user_id, &conn).unwrap();
+}
+
+#[test]
+fn find_user_by_attribute() {
+  let conn = get_db_con();
+
+  // let user1_firstname = "Stranger";
+  let user1_lastname = "Thin";
+
+  // let user2_firstname = "Spir";
+  // let user2_lastname = "Awa";
+
+  let q = UserQuery {
+    firstname: None,
+    lastname: Some(user1_lastname),
+  };
+
+  let _user = User::query(&q, &conn).unwrap();
+  println!("{:?}", _user);
 }
 
 #[test]
@@ -193,6 +212,20 @@ fn find_task() {
   let task_id = 3;
 
   let _task = Task::find(task_id, &conn).unwrap();
+}
+
+#[test]
+fn find_task_by_name() {
+  let conn = get_db_con();
+  let task_name = "ComProg";
+
+  let q = TaskQuery {
+    name: Some(task_name),
+  };
+
+  let _task = Task::query(&q, &conn).unwrap();
+
+  println!("{:?}", _task);
 }
 
 #[test]

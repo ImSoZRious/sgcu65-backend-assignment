@@ -1,7 +1,5 @@
 #[macro_use]
 extern crate diesel;
-#[macro_use]
-extern crate actix_web;
 
 mod db;
 mod model;
@@ -11,7 +9,7 @@ mod schema;
 use actix_web::{web, App, HttpServer};
 use db::init_pool;
 
-#[main]
+#[actix_web::main]
 async fn main() -> std::io::Result<()> {
   // let user = route::user::get_route();
   let db_pool = init_pool();

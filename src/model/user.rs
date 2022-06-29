@@ -39,6 +39,12 @@ pub struct UpdateUser {
   pub role: Option<String>,
 }
 
+#[derive(Default)]
+pub struct UserQuery<'a> {
+  pub firstname: Option<&'a str>,
+  pub lastname: Option<&'a str>,
+}
+
 impl User {
   pub fn create(user: &NewUser, conn: &PgConnection) -> Result<User, Error> {
     diesel::insert_into(users::table)
@@ -93,5 +99,26 @@ impl User {
 
   pub fn find(user_id: i32, conn: &PgConnection) -> Result<User, Error> {
     all_users.find(user_id).first(conn)
+  }
+
+  pub fn query(query: &UserQuery, conn: &PgConnection) -> Result<Vec<User>, Error> {
+    let mut filter: Vec<String> = Vec::new();
+    if let Some(firstname) = &query.firstname {
+      filter.push(format!("firstname LIKE '{}%'", firstname));
+    }
+    if let Some(lastname) = &query.lastname {
+      filter.push(format!("lastname LIKE '{}%'", lastname));
+    }
+
+    let filter_string = filter.join(", ");
+
+    let query_string = format!(
+      "SELECT * \
+    FROM users \
+    WHERE {}",
+      filter_string
+    );
+
+    diesel::sql_query(query_string).load(conn)
   }
 }
