@@ -42,7 +42,6 @@ cargo run
 - [x] find task by name
 - [x] find user by firstname, lastname
 - [x] assign task to user
-- [ ] add role enum
 - [ ] add properly do timestamp
 - [x] rewrite api specification
 - [ ] Redesign database for team
@@ -168,4 +167,4 @@ Team
 
 # [API Specification](/tests/README.md)
 # DB Design
-TODO
+![DB Desgin](DBDiagram.png)
