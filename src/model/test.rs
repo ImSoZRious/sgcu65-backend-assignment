@@ -4,6 +4,7 @@
 #[allow(unused_imports)]
 use std::env;
 
+use super::assign::UsersTask;
 use super::task::{NewTask, Task, TaskQuery, UpdateTask};
 use super::user::{NewUser, UpdateUser, User, UserQuery};
 
@@ -77,7 +78,7 @@ fn update_user() {
 fn delete_user() {
   let conn = get_db_con();
 
-  let delete_id = 3;
+  let delete_id = 10001;
 
   let _del_count = User::delete(delete_id, &conn).unwrap();
 }
@@ -102,8 +103,8 @@ fn find_user_by_attribute() {
   // let user2_lastname = "Awa";
 
   let q = UserQuery {
-    firstname: None,
     lastname: Some(s!(user1_lastname)),
+    ..Default::default()
   };
 
   let _user = User::query(&q, &conn).unwrap();
@@ -221,6 +222,7 @@ fn find_task_by_name() {
 
   let q = TaskQuery {
     name: Some(s!(task_name)),
+    ..Default::default()
   };
 
   let _task = Task::query(&q, &conn).unwrap();
@@ -275,4 +277,41 @@ fn combined_task_test() {
   let _del = Task::delete(10002, &conn);
   let users = Task::get_all(&conn).unwrap();
   assert_eq!(users.len(), 2);
+}
+
+#[test]
+fn assign_task() {
+  let conn = get_db_con();
+
+  let user_id = 10002;
+  let task_id = 10003;
+
+  let assign = UsersTask {
+    user_id: user_id,
+    task_id: task_id,
+  };
+
+  let assign = UsersTask::create(&assign, &conn).unwrap();
+
+  println!("{:?}", assign);
+}
+
+#[test]
+fn get_task_from_user() {
+  let conn = get_db_con();
+
+  let user_id = 10002;
+  let _tasks = UsersTask::from_user(user_id, &conn);
+
+  println!("{:?}", _tasks);
+}
+
+#[test]
+fn get_user_from_task() {
+  let conn = get_db_con();
+
+  let task_id = 10001;
+  let _users = UsersTask::from_task(task_id, &conn);
+
+  println!("{:?}", _users);
 }

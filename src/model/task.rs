@@ -39,7 +39,11 @@ pub struct UpdateTask {
 
 #[derive(Default, Deserialize, Debug)]
 pub struct TaskQuery {
+  pub id: Option<i32>,
   pub name: Option<String>,
+  pub content: Option<String>,
+  pub status: Option<String>,
+  pub deadline: Option<String>,
 }
 
 impl Task {
@@ -99,12 +103,7 @@ impl Task {
   }
 
   pub fn query(query: &TaskQuery, conn: &PgConnection) -> Result<Vec<Task>, Error> {
-    let mut filter: Vec<String> = Vec::new();
-    if let Some(name) = &query.name {
-      filter.push(format!("name LIKE '{}%'", name));
-    }
-
-    let filter_string = filter.join(" AND ");
+    let filter_string = query.to_filter_string();
 
     let query_string = format!(
       "SELECT * \
@@ -114,6 +113,10 @@ impl Task {
     );
 
     diesel::sql_query(query_string).load(conn)
+  }
+
+  pub fn query_id(ids: Vec<i32>, conn: &PgConnection) -> Result<Vec<Task>, Error> {
+    all_tasks.filter(tasks::id.eq_any(ids)).load(conn)
   }
 }
 
@@ -129,5 +132,27 @@ impl UpdateTask {
 impl TaskQuery {
   pub fn all_none(&self) -> bool {
     self.name.is_none()
+  }
+
+  pub fn to_filter_string(&self) -> String {
+    let mut filter: Vec<String> = Vec::new();
+
+    if let Some(id) = &self.id {
+      filter.push(format!("id LIKE '{}%'", id));
+    }
+    if let Some(name) = &self.name {
+      filter.push(format!("name LIKE '{}%'", name));
+    }
+    if let Some(content) = &self.content {
+      filter.push(format!("content LIKE '{}%'", content));
+    }
+    if let Some(status) = &self.status {
+      filter.push(format!("status LIKE '{}%'", status));
+    }
+    if let Some(deadline) = &self.deadline {
+      filter.push(format!("deadline LIKE '{}%'", deadline));
+    }
+
+    filter.join(" AND ")
   }
 }

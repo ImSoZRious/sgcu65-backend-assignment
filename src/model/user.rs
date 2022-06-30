@@ -41,8 +41,11 @@ pub struct UpdateUser {
 
 #[derive(Default, Deserialize, Debug)]
 pub struct UserQuery {
+  pub id: Option<i32>,
+  pub email: Option<String>,
   pub firstname: Option<String>,
   pub lastname: Option<String>,
+  pub role: Option<String>,
 }
 
 impl User {
@@ -102,15 +105,7 @@ impl User {
   }
 
   pub fn query(query: &UserQuery, conn: &PgConnection) -> Result<Vec<User>, Error> {
-    let mut filter: Vec<String> = Vec::new();
-    if let Some(firstname) = &query.firstname {
-      filter.push(format!("firstname LIKE '{}%'", firstname));
-    }
-    if let Some(lastname) = &query.lastname {
-      filter.push(format!("lastname LIKE '{}%'", lastname));
-    }
-
-    let filter_string = filter.join(" AND ");
+    let filter_string = query.to_filter_string();
 
     let query_string = format!(
       "SELECT * \
@@ -120,6 +115,10 @@ impl User {
     );
 
     diesel::sql_query(query_string).load(conn)
+  }
+
+  pub fn query_id(ids: Vec<i32>, conn: &PgConnection) -> Result<Vec<User>, Error> {
+    all_users.filter(users::id.eq_any(ids)).load(conn)
   }
 }
 
@@ -135,5 +134,27 @@ impl UpdateUser {
 impl UserQuery {
   pub fn all_none(&self) -> bool {
     self.firstname.is_none() && self.lastname.is_none()
+  }
+
+  pub fn to_filter_string(&self) -> String {
+    let mut filter: Vec<String> = Vec::new();
+
+    if let Some(email) = &self.email {
+      filter.push(format!("email LIKE '{}%'", email));
+    }
+    if let Some(id) = &self.id {
+      filter.push(format!("id LIKE '{}%'", id));
+    }
+    if let Some(firstname) = &self.firstname {
+      filter.push(format!("firstname LIKE '{}%'", firstname));
+    }
+    if let Some(lastname) = &self.lastname {
+      filter.push(format!("lastname LIKE '{}%'", lastname));
+    }
+    if let Some(role) = &self.role {
+      filter.push(format!("role LIKE '{}%'", role));
+    }
+
+    filter.join(" AND ")
   }
 }
