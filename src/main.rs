@@ -11,16 +11,17 @@ use db::init_pool;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-  // let user = route::user::get_route();
   let db_pool = init_pool();
 
   HttpServer::new(move || {
     let user_scope = route::user::get_scope();
     let task_scope = route::task::get_scope();
+    let assign_scope = route::assign::get_scope();
     App::new()
       .app_data(web::Data::new(db_pool.clone()))
       .service(user_scope)
       .service(task_scope)
+      .service(assign_scope)
   })
   .bind(("127.0.0.1", 8080))?
   .run()

@@ -2,7 +2,7 @@ use crate::schema::users_tasks;
 use crate::schema::users_tasks::dsl::users_tasks as all_ut;
 use diesel::prelude::*;
 use diesel::{Insertable, Queryable};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use diesel::PgConnection;
 
@@ -11,7 +11,7 @@ use super::user::User;
 
 use diesel::result::Error;
 
-#[derive(Clone, Serialize, Insertable, Queryable, Debug)]
+#[derive(Clone, Serialize, Insertable, Queryable, Debug, Deserialize)]
 pub struct UsersTask {
   pub user_id: i32,
   pub task_id: i32,

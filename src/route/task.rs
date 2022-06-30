@@ -1,3 +1,4 @@
+use super::super::model::assign::UsersTask;
 use super::super::model::task::{NewTask, Task, TaskQuery, UpdateTask};
 
 use super::{Json, MyError};
@@ -80,11 +81,34 @@ async fn search(query: web::Query<TaskQuery>, pool: web::Data<Pool>) -> impl Res
     return Err(MyError::InvalidFormat);
   }
 
+  let parsed_query = TaskQuery {
+    name: query.0.name,
+    ..Default::default()
+  };
+
   let conn = pool.get().expect("Cannot get connection");
 
-  let result: Result<Vec<Task>, MyError> = Task::query(&query.0, &conn).map_err(convert_error);
+  let result: Result<Vec<Task>, MyError> = Task::query(&parsed_query, &conn).map_err(convert_error);
 
   result
+    .and_then(|task| serde_json::to_string(&task).map_err(convert_error))
+    .map(|task_string| Json(task_string))
+}
+
+async fn get_owner(path: web::Path<(i32,)>, pool: web::Data<Pool>) -> impl Responder {
+  let id = path.into_inner().0;
+  let conn = pool.get().expect("Cannot get connection");
+
+  let result = UsersTask::from_task(id, &conn);
+
+  result
+    .map_err(|err| match err {
+      diesel::result::Error::DatabaseError(
+        diesel::result::DatabaseErrorKind::ForeignKeyViolation,
+        _,
+      ) => MyError::NotFound,
+      _ => MyError::InternalServerError,
+    })
     .and_then(|task| serde_json::to_string(&task).map_err(convert_error))
     .map(|task_string| Json(task_string))
 }
@@ -94,6 +118,7 @@ pub fn get_scope() -> Scope {
     .route("", web::get().to(get))
     .route("", web::post().to(create))
     .route("/search", web::get().to(search))
+    .route("/{id}/owner", web::get().to(get_owner))
     .route("/{id}", web::get().to(find))
     .route("/{id}", web::put().to(update))
     .route("/{id}", web::delete().to(delete))

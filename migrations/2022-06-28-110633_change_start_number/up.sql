@@ -14,7 +14,19 @@ CREATE TABLE tasks (
   name      VARCHAR NOT NULL,
   content   TEXT NOT NULL,
   status    VARCHAR NOT NULL,
-  deadline VARCHAR NOT NULL
+  deadline  VARCHAR NOT NULL
+);
+
+CREATE TABLE users_tasks (
+  user_id INTEGER NOT NULL,
+  task_id INTEGER NOT NULL,
+  CONSTRAINT PK_UserTask PRIMARY KEY
+  (
+    user_id,
+    task_id
+  ),
+  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  FOREIGN KEY (task_id) REFERENCES tasks (id) ON DELETE CASCADE
 );
 
 ALTER SEQUENCE users_seq RESTART WITH 10001;

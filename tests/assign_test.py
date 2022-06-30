@@ -88,12 +88,12 @@ def create_task():
 def assign_task():
   try:
     assign_obj_1 = {
-      'user_id': user_id1,
-      'task_id': task_id1
+      'user_id': int(user_id1),
+      'task_id': int(task_id1)
     }
     assign_obj_2 = {
-      'user_id': user_id1,
-      'task_id': task_id2
+      'user_id': int(user_id1),
+      'task_id': int(task_id2)
     }
 
     res = h.post('/assign', assign_obj_1)
@@ -112,11 +112,15 @@ def assign_task():
 def get_from_task():
   try:
     res = h.get("task/{}/owner".format(task_id1))
-
     if res.status_code != 200:
       return FAILED
 
-    res_data = json.loads(res)
+    res_data = json.loads(res.text)
+
+    if len(res_data) != 1:
+      return FAILED
+    
+    res_data = res_data[0]
 
     if not is_user(res_data) or str(res_data['id']) != user_id1:
       return FAILED
@@ -126,7 +130,12 @@ def get_from_task():
     if res.status_code != 200:
       return FAILED
 
-    res_data = json.loads(res)
+    res_data = json.loads(res.text)
+
+    if len(res_data) != 1:
+      return FAILED
+    
+    res_data = res_data[0]
 
     if not is_user(res_data) or str(res_data['id']) != user_id1:
       return FAILED
@@ -142,7 +151,7 @@ def get_from_user():
     if res.status_code != 200:
       return FAILED
 
-    res_data = json.loads(res)
+    res_data = json.loads(res.text)
 
     if not all([is_task(task) and str(task['id']) in [task_id1, task_id2] for task in res_data]):
       return FAILED

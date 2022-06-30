@@ -1,3 +1,4 @@
+pub mod assign;
 pub mod task;
 pub mod user;
 
@@ -13,6 +14,7 @@ use actix_web::error::ResponseError;
 enum MyError {
   InternalServerError,
   InvalidFormat,
+  NotFound,
 }
 
 impl std::fmt::Display for MyError {
@@ -23,6 +25,7 @@ impl std::fmt::Display for MyError {
       match *self {
         MyError::InternalServerError => "Interal Server Error",
         MyError::InvalidFormat => "Invalid Format",
+        MyError::NotFound => "Not Found",
       }
     )?;
 
@@ -41,6 +44,7 @@ impl ResponseError for MyError {
     match *self {
       MyError::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
       MyError::InvalidFormat => StatusCode::BAD_REQUEST,
+      MyError::NotFound => StatusCode::NOT_FOUND,
     }
   }
 }

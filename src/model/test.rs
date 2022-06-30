@@ -283,7 +283,7 @@ fn combined_task_test() {
 fn assign_task() {
   let conn = get_db_con();
 
-  let user_id = 10002;
+  let user_id = 10005;
   let task_id = 10003;
 
   let assign = UsersTask {
@@ -310,7 +310,7 @@ fn get_task_from_user() {
 fn get_user_from_task() {
   let conn = get_db_con();
 
-  let task_id = 10001;
+  let task_id = 10011;
   let _users = UsersTask::from_task(task_id, &conn);
 
   println!("{:?}", _users);
