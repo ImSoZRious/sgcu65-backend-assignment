@@ -1,7 +1,7 @@
 import helper as h
 import json
 
-SUCESS = 0
+SUCCESS = 0
 FAILED = 1
 CONNECTION_ERROR = 2
 
@@ -31,7 +31,7 @@ def create_test():
     
     create_id = str(res_data['id'])
 
-    return SUCESS
+    return SUCCESS
 
   except:
     return CONNECTION_ERROR
@@ -48,7 +48,7 @@ def read_test():
     if not is_user(test_data):
       return FAILED
 
-    return SUCESS
+    return SUCCESS
   except:
     return CONNECTION_ERROR
 
@@ -60,7 +60,7 @@ def update_test():
     res = h.put('/user/' + create_id, new_data)
     if res.status_code != 200:
       return FAILED
-    return SUCESS  
+    return SUCCESS  
   except:
     return CONNECTION_ERROR
 
@@ -69,7 +69,7 @@ def delete_test():
     res = h.delete('/user/' + create_id)
     if res.status_code != 200:
       return FAILED
-    return SUCESS
+    return SUCCESS
   except:
     return CONNECTION_ERROR
 
@@ -82,7 +82,7 @@ def find_test():
     if not is_user(res_data):
       return FAILED
 
-    return SUCESS
+    return SUCCESS
   except:
     return CONNECTION_ERROR
 
@@ -105,7 +105,7 @@ def query_test():
       if not is_user(res_data):
         return FAILED
 
-    return SUCESS
+    return SUCCESS
   except:
     return CONNECTION_ERROR
 
