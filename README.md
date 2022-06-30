@@ -41,7 +41,7 @@ cargo run
 - [x] use functor for api
 - [x] find task by name
 - [x] find user by firstname, lastname
-- [ ] assign task to user
+- [x] assign task to user
 - [ ] add role enum
 - [ ] add properly do timestamp
 - [x] rewrite api specification
