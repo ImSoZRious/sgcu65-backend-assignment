@@ -28,8 +28,10 @@ fn create_team() {
 fn update_team() {
   let conn = get_db_con();
 
+  let id = Team::get_all(&conn).unwrap()[0].id;
+
   let update_info = PartialTeam {
-    id: Some(10001),
+    id: Some(id),
     name: Some(s!("Calculus")),
     ..Default::default()
   };
@@ -38,19 +40,10 @@ fn update_team() {
 }
 
 #[test]
-fn delete_team() {
-  let conn = get_db_con();
-
-  let delete_id = 10001;
-
-  let _del_count = Team::delete(delete_id, &conn).unwrap();
-}
-
-#[test]
 fn find_team() {
   let conn = get_db_con();
 
-  let team_id = 10002;
+  let team_id = Team::get_all(&conn).unwrap()[0].id;
 
   let _team = Team::find(team_id, &conn).unwrap();
 
@@ -73,6 +66,15 @@ fn find_team_by_name() {
 }
 
 #[test]
+fn delete_team() {
+  let conn = get_db_con();
+
+  let delete_id = Team::get_all(&conn).unwrap()[0].id;
+
+  let _del_count = Team::delete(delete_id, &conn).unwrap();
+}
+
+#[test]
 fn combined_team_test() {
   let conn = get_db_con();
 
@@ -90,8 +92,10 @@ fn combined_team_test() {
     let _team = Team::create(team, &conn).unwrap();
   }
 
+  let id = Team::get_all(&conn).unwrap()[0].id;
+
   let edit_infos = vec![PartialTeam {
-    id: Some(10003),
+    id: Some(id),
     name: Some(s!("yay")),
   }];
 
@@ -102,7 +106,7 @@ fn combined_team_test() {
   let users = Team::get_all(&conn).unwrap();
   let first = users.len();
 
-  let _del = Team::delete(10003, &conn);
+  let _del = Team::delete(id, &conn);
   let users = Team::get_all(&conn).unwrap();
   assert_eq!(users.len(), first - 1);
 }

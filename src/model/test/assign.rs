@@ -1,41 +1,32 @@
-use super::super::assign::TeamsTasks;
 use super::super::task::Task;
 use super::super::team::Team;
 use super::get_db_con;
 use super::s;
-
 #[test]
 fn assign_task() {
   let conn = get_db_con();
   let team_id = Team::get_all(&conn).unwrap()[0].id;
   let task_id = Task::get_all(&conn).unwrap()[0].id;
 
-  let assign = TeamsTasks {
-    team_id: team_id,
-    task_id: task_id,
-  };
+  Task::assign_to(task_id, team_id, &conn).unwrap();
 
-  let assign = TeamsTasks::create(&assign, &conn).unwrap();
-
-  println!("{:?}", assign);
+  assert_eq!(
+    Task::find(task_id, &conn).unwrap().owner_team_id.unwrap(),
+    team_id
+  );
 }
 
 #[test]
-fn get_task_from_team() {
+fn get_team_form_task() {
   let conn = get_db_con();
 
-  let team_id = Team::get_all(&conn).unwrap()[0].id;
-  let _tasks = TeamsTasks::from_team(team_id, &conn);
+  let task = &Task::get_all(&conn)
+    .unwrap()
+    .into_iter()
+    .filter(|task| task.owner_team_id.is_some())
+    .collect::<Vec<Task>>()[0];
 
-  println!("{:?}", _tasks);
-}
+  let team = task.get_team(&conn).unwrap().unwrap();
 
-#[test]
-fn get_team_from_task() {
-  let conn = get_db_con();
-
-  let task_id = Task::get_all(&conn).unwrap()[0].id;
-  let _teams = TeamsTasks::from_task(task_id, &conn);
-
-  println!("{:?}", _teams);
+  println!("{:?}", team);
 }

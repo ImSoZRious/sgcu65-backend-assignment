@@ -36,19 +36,6 @@ CREATE TABLE "session" (
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-
-CREATE TABLE "teams_tasks" (
-  "team_id" INTEGER NOT NULL,
-  "task_id" INTEGER NOT NULL,
-  CONSTRAINT PK_TeamTask PRIMARY KEY
-  (
-    "team_id",
-    "task_id"
-  ),
-  FOREIGN KEY (team_id) REFERENCES teams (id) ON DELETE CASCADE,
-  FOREIGN KEY (task_id) REFERENCES tasks (id) ON DELETE CASCADE
-);
-
 ALTER SEQUENCE users_seq RESTART WITH 10001;
 
 ALTER SEQUENCE tasks_seq RESTART WITH 10001;

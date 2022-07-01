@@ -47,15 +47,6 @@ fn update_user() {
 }
 
 #[test]
-fn delete_user() {
-  let conn = get_db_con();
-
-  let delete_id = User::get_all(&conn).unwrap()[0].id;
-
-  let _del_count = User::delete(delete_id, &conn).unwrap();
-}
-
-#[test]
 fn find_user() {
   let conn = get_db_con();
 
@@ -83,6 +74,15 @@ fn find_user_by_attribute() {
 
   let _user = User::query(&q, &conn).unwrap();
   println!("{:?}", _user);
+}
+
+#[test]
+fn delete_user() {
+  let conn = get_db_con();
+
+  let delete_id = User::get_all(&conn).unwrap()[0].id;
+
+  let _del_count = User::delete(delete_id, &conn).unwrap();
 }
 
 #[test]

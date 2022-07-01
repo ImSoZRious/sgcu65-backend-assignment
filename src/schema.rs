@@ -26,13 +26,6 @@ table! {
 }
 
 table! {
-    teams_tasks (team_id, task_id) {
-        team_id -> Int4,
-        task_id -> Int4,
-    }
-}
-
-table! {
     users (id) {
         id -> Int4,
         firstname -> Varchar,
@@ -46,14 +39,11 @@ table! {
 }
 
 joinable!(session -> users (user_id));
-joinable!(teams_tasks -> tasks (task_id));
-joinable!(teams_tasks -> teams (team_id));
 joinable!(users -> teams (team_id));
 
 allow_tables_to_appear_in_same_query!(
     session,
     tasks,
     teams,
-    teams_tasks,
     users,
 );

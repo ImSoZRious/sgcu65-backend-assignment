@@ -43,15 +43,6 @@ fn update_task() {
 }
 
 #[test]
-fn delete_task() {
-  let conn = get_db_con();
-
-  let delete_id = Task::get_all(&conn).unwrap()[0].id;
-
-  let _del_count = Task::delete(delete_id, &conn).unwrap();
-}
-
-#[test]
 fn find_task() {
   let conn = get_db_con();
 
@@ -65,7 +56,7 @@ fn find_task() {
 #[test]
 fn find_task_by_name() {
   let conn = get_db_con();
-  let task_name = "Compr";
+  let task_name = "Cal";
 
   let q = PartialTask {
     name: Some(s!(task_name)),
@@ -75,6 +66,15 @@ fn find_task_by_name() {
   let _task = Task::query(&q, &conn).unwrap();
 
   println!("{:?}", _task);
+}
+
+#[test]
+fn delete_task() {
+  let conn = get_db_con();
+
+  let delete_id = Task::get_all(&conn).unwrap()[0].id;
+
+  let _del_count = Task::delete(delete_id, &conn).unwrap();
 }
 
 #[test]
