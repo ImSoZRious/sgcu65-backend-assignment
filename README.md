@@ -44,13 +44,13 @@ cargo run
 - [x] assign task to user
 - [ ] add properly do timestamp
 - [x] rewrite api specification
-- [ ] Redesign database for team
-- [ ] Add DB Design
+- [x] Redesign database for team
+- [x] Add DB Design
 - [ ] Rewrite api specification
-- [ ] Team (CRUD)
-- [ ] Team Find
+- [x] Team (CRUD)
+- [x] Team Find
 - [ ] Team assign user
-- [ ] Team assign task
+- [x] Team assign task
 - [ ] TBD
 - [ ] Docker if have excess time
 
