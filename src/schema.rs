@@ -1,35 +1,59 @@
 table! {
+    session (id) {
+        id -> Int4,
+        api_key -> Varchar,
+        expire_time -> Varchar,
+        user_id -> Int4,
+    }
+}
+
+table! {
     tasks (id) {
         id -> Int4,
         name -> Varchar,
-        content -> Text,
+        content -> Varchar,
         status -> Varchar,
         deadline -> Varchar,
+        owner_team_id -> Nullable<Int4>,
+    }
+}
+
+table! {
+    teams (id) {
+        id -> Int4,
+        name -> Varchar,
+    }
+}
+
+table! {
+    teams_tasks (team_id, task_id) {
+        team_id -> Int4,
+        task_id -> Int4,
     }
 }
 
 table! {
     users (id) {
         id -> Int4,
-        email -> Varchar,
         firstname -> Varchar,
         lastname -> Varchar,
+        email -> Varchar,
         role -> Varchar,
+        team_id -> Nullable<Int4>,
+        pwd_hash -> Varchar,
+        permission -> Varchar,
     }
 }
 
-table! {
-    users_tasks (user_id, task_id) {
-        user_id -> Int4,
-        task_id -> Int4,
-    }
-}
-
-joinable!(users_tasks -> tasks (task_id));
-joinable!(users_tasks -> users (user_id));
+joinable!(session -> users (user_id));
+joinable!(teams_tasks -> tasks (task_id));
+joinable!(teams_tasks -> teams (team_id));
+joinable!(users -> teams (team_id));
 
 allow_tables_to_appear_in_same_query!(
+    session,
     tasks,
+    teams,
+    teams_tasks,
     users,
-    users_tasks,
 );
