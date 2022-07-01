@@ -30,3 +30,13 @@ fn get_team_form_task() {
 
   println!("{:?}", team);
 }
+
+#[test]
+fn get_task_from_team() {
+  let conn = get_db_con();
+  let team = Team::find(10007, &conn).unwrap();
+
+  let task = team.get_task(&conn);
+
+  println!("{:?}", task);
+}

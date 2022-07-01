@@ -32,3 +32,15 @@ impl Task {
     Ok(Some(result[0].clone()))
   }
 }
+
+impl Team {
+  pub fn get_task(&self, conn: &PgConnection) -> Result<Vec<Task>, Error> {
+    let team_id = self.id;
+
+    let result = all_tasks
+      .filter(tasks::owner_team_id.eq(team_id))
+      .load::<Task>(conn)?;
+
+    Ok(result)
+  }
+}
