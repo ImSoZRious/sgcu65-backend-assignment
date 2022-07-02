@@ -1,6 +1,4 @@
-use super::{Json, MyError};
-
-use super::convert_error;
+use super::MyError;
 
 use super::super::model::task::Task;
 use actix_web::{web, HttpResponse, Responder, Scope};

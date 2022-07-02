@@ -1,7 +1,7 @@
 use super::super::team::Team;
 use super::super::user::User;
 use super::get_db_con;
-use super::s;
+
 #[test]
 fn assign_user() {
   let conn = get_db_con();

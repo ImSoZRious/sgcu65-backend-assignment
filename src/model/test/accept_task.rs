@@ -1,7 +1,7 @@
 use super::super::task::Task;
 use super::super::team::Team;
 use super::get_db_con;
-use super::s;
+
 #[test]
 fn accept_task() {
   let conn = get_db_con();

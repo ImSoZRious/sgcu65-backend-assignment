@@ -45,16 +45,8 @@ cargo run
 - [x] rewrite api specification
 - [x] Redesign database for team
 - [x] Add DB Design
-- [ ] Rewrite api specification
-- [ ] Team Model
-  - [x] Team (CRUD)
-  - [x] Team Find
-  - [ ] Team assign user
-    - [ ] Assign from user
-    - [ ] Assign from team
-  - [ ] Team assign task
-    - [x] Assign from task
-    - [ ] Assign from team
+- [x] Rewrite api specification
+- [x] Team Model
 - [ ] TBD
 - [ ] Docker if have excess time
 
