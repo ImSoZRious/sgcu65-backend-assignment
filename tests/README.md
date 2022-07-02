@@ -60,6 +60,10 @@ __GET /user/search?(firstname={firstname})(&)(lastname={lastname})__ \
 One of its attribute need to be filled \
 Return: [User](#user-object)[]
 
+## Get team
+__GET /user/:id/team__ \
+Return: [Team](#team-object)
+
 # Task
 ## Create task
 __POST /task__ \
@@ -86,7 +90,7 @@ __GET /task/search?name={name}__ \
 Return: [Task](#task-object)[]
 
 ## Read task owner
-__GET /task/:id/owner__ \
+__GET /task/:id/team__ \
 Return: [Team](#team-object)
 
 
@@ -125,11 +129,11 @@ __POST /accept_task__ \
 Payload: [AcceptTask](#accept-task)
 
 ## Read all task
-__GET /team/task__ \
+__GET /team/:id/task__ \
 Return: [Task](#task-object)[]
 
 ## Read all user
-__GET /team/user__ \
+__GET /team/:id/user__ \
 Return [User](#user-object)[]
 
 # Addtional Idea: Role (enum)
