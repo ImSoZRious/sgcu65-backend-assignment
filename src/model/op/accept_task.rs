@@ -34,6 +34,18 @@ impl Task {
 }
 
 impl Team {
+  pub fn accept_task(task_id: i32, team_id: i32, conn: &PgConnection) -> Result<(), Error> {
+    let row = diesel::update(all_tasks.filter(tasks::id.eq(task_id)))
+      .set(tasks::owner_team_id.eq(team_id))
+      .execute(conn);
+
+    match row {
+      Ok(1) => Ok(()),
+      Ok(_) => Err(diesel::result::Error::NotFound),
+      Err(n) => Err(n),
+    }
+  }
+
   pub fn get_task(&self, conn: &PgConnection) -> Result<Vec<Task>, Error> {
     let team_id = self.id;
 

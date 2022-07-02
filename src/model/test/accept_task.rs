@@ -3,7 +3,7 @@ use super::super::team::Team;
 use super::get_db_con;
 use super::s;
 #[test]
-fn assign_task() {
+fn accept_task() {
   let conn = get_db_con();
   let team_id = Team::get_all(&conn).unwrap()[0].id;
   let task_id = Task::get_all(&conn).unwrap()[0].id;
