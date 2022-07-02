@@ -17,7 +17,8 @@ def create_test():
       'email': 'abc@gmail.com',
       'firstname': 'Finding',
       'lastname': 'Nemo',
-      'role': 'UX/UI Designer'
+      'role': 'UX/UI Designer',
+      'pwd': 'Hahaha'
     }
     res = h.post('/user', user_payload)
 

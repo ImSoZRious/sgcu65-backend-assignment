@@ -42,15 +42,19 @@ cargo run
 - [x] find task by name
 - [x] find user by firstname, lastname
 - [x] assign task to user
-- [ ] add properly do timestamp
 - [x] rewrite api specification
 - [x] Redesign database for team
 - [x] Add DB Design
 - [ ] Rewrite api specification
-- [x] Team (CRUD)
-- [x] Team Find
-- [ ] Team assign user
-- [x] Team assign task
+- [ ] Team Model
+  - [x] Team (CRUD)
+  - [x] Team Find
+  - [ ] Team assign user
+    - [ ] Assign from user
+    - [ ] Assign from team
+  - [ ] Team assign task
+    - [x] Assign from task
+    - [ ] Assign from team
 - [ ] TBD
 - [ ] Docker if have excess time
 

@@ -26,7 +26,8 @@ def create_user():
       'email': 'abc@gmail.com',
       'firstname': 'Finding',
       'lastname': 'Nemo',
-      'role': 'UX/UI Designer'
+      'role': 'UX/UI Designer',
+      'pwd': '123456'
     }
     res = h.post('/user', user_payload)
 
@@ -95,7 +96,7 @@ def create_team():
     team = {
       'name': 'Let\'s game it out'
     }
-    res = h.post('/team', team[0])
+    res = h.post('/team', team)
 
     if res.status_code != 200:
       return FAILED
@@ -124,6 +125,9 @@ def assign_user():
       return FAILED
     
     return SUCCESS
+
+  except:
+    return CONNECTION_ERROR
 
 
 def accept_task():
@@ -158,8 +162,6 @@ def get_team_from_task():
 
     res_data = json.loads(res.text)
     
-    res_data = res_data[0]
-
     if not is_team(res_data) or str(res_data['id']) != team_id1:
       return FAILED
 
@@ -169,8 +171,6 @@ def get_team_from_task():
 
     res_data = json.loads(res.text)
     
-    res_data = res_data[0]
-
     if not is_team(res_data) or str(res_data['id']) != team_id1:
       return FAILED
     return SUCCESS
@@ -215,7 +215,7 @@ def get_user_from_team():
 
     res_data = json.loads(res.text)
 
-    if len(res_data) != 1 or not is_user(red_data[0]):
+    if len(res_data) != 1 or not is_user(res_data[0]):
       return FAILED
 
     return SUCCESS

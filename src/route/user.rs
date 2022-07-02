@@ -1,5 +1,4 @@
-use super::super::model::assign::UsersTask;
-use super::super::model::user::{NewUser, UpdateUser, User, UserQuery};
+use super::super::model::user::{NewUser, PartialUser, User};
 
 use super::{Json, MyError};
 
@@ -32,7 +31,7 @@ async fn create(body: web::Json<NewUser>, pool: web::Data<Pool>) -> impl Respond
 }
 
 async fn update(
-  body: web::Json<UpdateUser>,
+  body: web::Json<PartialUser>,
   path: web::Path<(i32,)>,
   pool: web::Data<Pool>,
 ) -> impl Responder {
@@ -43,7 +42,7 @@ async fn update(
   let mut user = body.0;
   let id = path.into_inner().0;
   let conn = pool.get().expect("Cannot get connection");
-  user.id = id;
+  user.id = Some(id);
 
   let result = User::update(&user, &conn);
 
@@ -77,12 +76,12 @@ async fn find(path: web::Path<(i32,)>, pool: web::Data<Pool>) -> impl Responder 
     .map(|user_string| Json(user_string))
 }
 
-async fn search(query: web::Query<UserQuery>, pool: web::Data<Pool>) -> impl Responder {
+async fn search(query: web::Query<PartialUser>, pool: web::Data<Pool>) -> impl Responder {
   if query.0.all_none() {
     return Err(MyError::InvalidFormat);
   }
 
-  let parsed_query = UserQuery {
+  let parsed_query = PartialUser {
     firstname: query.0.firstname,
     lastname: query.0.lastname,
     ..Default::default()
@@ -97,22 +96,23 @@ async fn search(query: web::Query<UserQuery>, pool: web::Data<Pool>) -> impl Res
     .map(|user_string| Json(user_string))
 }
 
-async fn get_task(path: web::Path<(i32,)>, pool: web::Data<Pool>) -> impl Responder {
+async fn get_team(path: web::Path<(i32,)>, pool: web::Data<Pool>) -> impl Responder {
   let id = path.into_inner().0;
   let conn = pool.get().expect("Cannot get connection");
 
-  let result = UsersTask::from_user(id, &conn);
-
-  result
+  User::find(id, &conn)
     .map_err(|err| match err {
-      diesel::result::Error::DatabaseError(
-        diesel::result::DatabaseErrorKind::ForeignKeyViolation,
-        _,
-      ) => MyError::NotFound,
+      diesel::result::Error::NotFound => MyError::NotFound,
       _ => MyError::InternalServerError,
     })
-    .and_then(|task| serde_json::to_string(&task).map_err(convert_error))
-    .map(|task_string| Json(task_string))
+    .and_then(|user| {
+      let team = user.get_team(&conn).map_err(convert_error)?;
+      if team.is_none() {
+        return Ok(Json("{}".to_string()));
+      }
+      let ret = serde_json::to_string(&team).map_err(convert_error);
+      Ok(Json(ret.unwrap()))
+    })
 }
 
 pub fn get_scope() -> Scope {
@@ -120,7 +120,7 @@ pub fn get_scope() -> Scope {
     .route("", web::get().to(get))
     .route("", web::post().to(create))
     .route("/search", web::get().to(search))
-    .route("/{id}/task", web::get().to(get_task))
+    .route("/{id}/team", web::get().to(get_team))
     .route("/{id}", web::get().to(find))
     .route("/{id}", web::put().to(update))
     .route("/{id}", web::delete().to(delete))

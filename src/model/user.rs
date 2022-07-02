@@ -117,8 +117,6 @@ impl User {
       filter_string
     );
 
-    println!("{}", query_string);
-
     diesel::sql_query(query_string).load(conn)
   }
 
