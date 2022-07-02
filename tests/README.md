@@ -60,10 +60,6 @@ __GET /user/search?(firstname={firstname})(&)(lastname={lastname})__ \
 One of its attribute need to be filled \
 Return: [User](#user-object)[]
 
-## Read user task
-__GET /user/:id/task__ \
-Return: [task](#task-object)[]
-
 # Task
 ## Create task
 __POST /task__ \
@@ -73,7 +69,7 @@ Return: [Task](#task-object)
 ## Read all task
 __GET /task__ \
 Get all task.
-Return: [Task](#task-object)[#task-object]
+Return: [Task](#task-object)
 ## Update task
 __PUT /task/:id__ \
 Payload: [UpdateTask](#update-task)
@@ -89,13 +85,52 @@ Return: [Task](#task-object)
 __GET /task/search?name={name}__ \
 Return: [Task](#task-object)[]
 
-## Assign Task
-__POST /assign_task__ \
-Payload: [AssignTask](#assigntask-object)
-
 ## Read task owner
 __GET /task/:id/owner__ \
-Return: [User](#user-object)[]
+Return: [Team](#team-object)
+
+
+# Team
+## Create team
+__POST /team__ \
+Create team payload.
+Payload: [NewTeam](#newtask-object)
+Return: [Team](#task-object)
+## Read all task
+__GET /team__ \
+Get all team.
+Return: [Team](#team-object)
+## Update team
+__PUT /team/:id__ \
+Payload: [PartialTask](#partial-task)
+
+## Delete team
+__DELETE /team/:id__ \
+Delete task.
+
+## Find team
+__GET /team/:id__ \
+Return: [Team](#team-object)
+
+## Search team
+__GET /team/search?name={name}__ \
+Return: [Team](#team-object)[]
+
+## Add user to the team
+__POST /assign_user__ \
+Payload: [AssignUser](#assignuser-object)
+
+## Accept task
+__POST /accept_task__ \
+Payload: [AcceptTask](#accept-task)
+
+## Read all task
+__GET /team/task__ \
+Return: [Task](#task-object)[]
+
+## Read all user
+__GET /team/user__ \
+Return [User](#user-object)[]
 
 # Addtional Idea: Role (enum)
 making role as enum make 
@@ -103,8 +138,6 @@ making role as enum make
 - Frontend Developer
 - Backend Developer
 - Project Manager
-
-
 
 # Object
 ## User Object
@@ -114,26 +147,30 @@ making role as enum make
   email: string,
   firstname: string,
   lastname: string,
-  role: string
+  role: string,
+  team_id: Nullable<ID>
 }
 ```
+
 ## NewUser Object
 ```
 {
   email: string,
   firstname: string,
   lastname: string,
-  role: string
+  role: string,
+  pwd: string
 }
 ```
-## UpdateUser Object
+## PartialUser Object
 At least one of the optional field is required.
 ```
 {
   email?: string,
   firstname?: string,
   lastname?: string,
-  role?: string
+  role?: string,
+  team_id?: Nullable<ID>
 }
 ```
 ## Task Object
@@ -143,7 +180,8 @@ At least one of the optional field is required.
   name: string,
   content: string,
   status: string,
-  deadline: Timestamp
+  deadline: Timestamp,
+  owner_team_id: Nullable<ID>
 }
 ```
 
@@ -156,7 +194,7 @@ At least one of the optional field is required.
   deadline: Timestamp
 }
 ```
-## UpdateTask Object
+## PartialTask Object
 At least one of the optional field is required.
 ```
 {
@@ -167,13 +205,46 @@ At least one of the optional field is required.
 }
 ```
 
-## AssignTask Object
+## Team Object
 ```
 {
-  user_id: ID,
+  id: ID,
+  name: String
+}
+```
+
+## NewTeam Object
+```
+{
+  name: string
+}
+```
+
+## PartialTeam Object
+```
+{
+  id?: ID,
+  name?: string
+}
+```
+
+# Other
+## AssignUser Object
+```
+{
+  team_id: ID,
+  user_id: ID
+}
+```
+## AcceptTask Object
+```
+{
+  team_id: ID,
   task_id: ID
 }
 ```
+
+
 ## Timestamp
 Timestamp is string which formatted as 'YYYY-MM-DD HH:MM:SS' such as '2022-12-31 15:45:10'.
 
