@@ -3,8 +3,10 @@ use crate::schema::users::dsl::users as all_users;
 use diesel::prelude::*;
 use diesel::{Insertable, Queryable, QueryableByName};
 use serde::{Deserialize, Serialize};
+use std::fmt::Write;
 
 use diesel::result::Error;
+use sha2::{Digest, Sha256};
 
 #[derive(Serialize, Deserialize, Debug, Queryable, QueryableByName, Insertable, Clone)]
 #[table_name = "users"]
@@ -199,14 +201,14 @@ impl PartialUser {
   }
 }
 
-// temporary hash function
 fn hash(pwd: &String) -> String {
-  pwd
-    .as_bytes()
-    .iter()
-    .map(|&v| v as i32)
-    .sum::<i32>()
-    .to_string()
+  let mut ret = String::new();
+  let mut hasher = Sha256::new();
+  hasher.update(pwd.as_bytes());
+  for byte in hasher.finalize() {
+    write!(&mut ret, "{:X}", byte).expect("Unable to write");
+  }
+  ret
 }
 
 impl From<&NewUser> for InsertUser {
