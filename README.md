@@ -4,9 +4,9 @@
 - [How to start](#how-to-start)
   - [Normal](#normal)
   - [Lazy script](#lazy-script)
+  - [Non-docker script](#non-docker-script)
 - [Troubleshoot](#troubleshoot)
   - [Program exit with code 3](#program-exit-with-code-3)
-- [TODO](#todo)
 - [โจทย์](#โจทย์)
   - [รายละเอียดโจทย์](#รายละเอียดโจทย์)
   - [งานของคุณ](#งานของคุณ)
@@ -42,22 +42,13 @@ cd sgcu65-backend-assignment/
 mv .env.example .env
 docker-compose up
 ```
+## Non-docker script
+1. setup postgresql \
+2. setup .env
+3. cargo run --release
 
 # Troubleshoot
 ## [Program exit with code 3](https://github.com/diesel-rs/diesel/discussions/2947)
-
-# TODO
-- [x] use functor for api
-- [x] find task by name
-- [x] find user by firstname, lastname
-- [x] assign task to user
-- [x] rewrite api specification
-- [x] Redesign database for team
-- [x] Add DB Design
-- [x] Rewrite api specification
-- [x] Team Model
-- [ ] TBD
-- [x] Docker if have excess time
 
 # โจทย์
 

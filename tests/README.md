@@ -8,7 +8,7 @@
   - [Delete user](#delete-user)
   - [Find user](#find-user)
   - [Search user](#search-user)
-  - [Read user task](#read-user-task)
+  - [Get team](#get-team)
 - [Task](#task)
   - [Create task](#create-task-1)
   - [Read all task](#read-all-task)
@@ -16,17 +16,32 @@
   - [Delete task](#delete-task)
   - [Find task](#find-task)
   - [Search Task](#search-task)
-  - [Assign Task](#assign-task)
   - [Read task owner](#read-task-owner)
+- [Team](#team)
+  - [Create team](#create-team)
+  - [Read all team](#read-all-team)
+  - [Update team](#update-team)
+  - [Delete team](#delete-team)
+  - [Find team](#find-team)
+  - [Search team](#search-team)
+  - [Add user to the team](#add-user-to-the-team)
+  - [Accept task](#accept-task)
+  - [Read all task](#read-all-task-1)
+  - [Read all user](#read-all-user-1)
 - [Addtional Idea: Role (enum)](#addtional-idea-role-enum)
 - [Object](#object)
   - [User Object](#user-object)
   - [NewUser Object](#newuser-object)
-  - [UpdateUser Object](#updateuser-object)
+  - [PartialUser Object](#partialuser-object)
   - [Task Object](#task-object)
   - [NewTask Object](#newtask-object)
-  - [UpdateTask Object](#updatetask-object)
-  - [AssignTask Object](#assigntask-object)
+  - [PartialTask Object](#partialtask-object)
+  - [Team Object](#team-object)
+  - [NewTeam Object](#newteam-object)
+  - [PartialTeam Object](#partialteam-object)
+- [Other](#other)
+  - [AssignUser Object](#assignuser-object)
+  - [AcceptTask Object](#accepttask-object)
   - [Timestamp](#timestamp)
   - [ID](#id)
 
@@ -67,12 +82,12 @@ Return: [Team](#team-object)
 # Task
 ## Create task
 __POST /task__ \
-Create task payload.
-Payload: [NewTask](#newtask-object)
+Create task payload. \
+Payload: [NewTask](#newtask-object) \
 Return: [Task](#task-object)
 ## Read all task
 __GET /task__ \
-Get all task.
+Get all task. \
 Return: [Task](#task-object)
 ## Update task
 __PUT /task/:id__ \
@@ -97,12 +112,12 @@ Return: [Team](#team-object)
 # Team
 ## Create team
 __POST /team__ \
-Create team payload.
-Payload: [NewTeam](#newtask-object)
+Create team payload. \
+Payload: [NewTeam](#newtask-object) \
 Return: [Team](#task-object)
-## Read all task
+## Read all team
 __GET /team__ \
-Get all team.
+Get all team. \
 Return: [Team](#team-object)
 ## Update team
 __PUT /team/:id__ \
