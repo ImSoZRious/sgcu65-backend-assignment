@@ -2,8 +2,6 @@
 - [Table of Contents](#table-of-contents)
 - [ชื่อ - นามสกุลผู้สมัคร](#ชื่อ---นามสกุลผู้สมัคร)
 - [How to start](#how-to-start)
-  - [Rust toolchain setup](#rust-toolchain-setup)
-  - [Compile and run](#compile-and-run)
 - [Troubleshoot](#troubleshoot)
   - [Program exit with code 3](#program-exit-with-code-3)
 - [TODO](#todo)
@@ -25,13 +23,8 @@
 ปัณณวิชญ์ โลหะนิมิต
 
 # How to start
-rust toolchain is required.
-## Rust toolchain setup
-[Rustup](https://www.rust-lang.org/learn/get-started)
-
-## Compile and run
 ```sh
-cargo run
+docker-compose up
 ```
 
 # Troubleshoot
@@ -48,7 +41,7 @@ cargo run
 - [x] Rewrite api specification
 - [x] Team Model
 - [ ] TBD
-- [ ] Docker if have excess time
+- [x] Docker if have excess time
 
 # โจทย์
 
