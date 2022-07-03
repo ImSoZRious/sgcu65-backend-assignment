@@ -11,6 +11,8 @@ use db::init_pool;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+  println!("Start initializing");
+
   let db_pool = init_pool();
 
   println!("[Init db]: Success");

@@ -23,6 +23,11 @@
 ปัณณวิชญ์ โลหะนิมิต
 
 # How to start
+set environment variable with this format. (.env.example is default valid file == "mv .env.example .env" is ok for testing)
+```sh
+DATABASE_URL=postgres://USERNAME:PASSWORD@db:PORT/DATABASE_NAME
+```
+it takes sometime, it's rust.
 ```sh
 docker-compose up
 ```

@@ -10,11 +10,12 @@ COPY . .
 
 RUN cargo install --path .
 
-
+# - Remove these line if there backend exit with code 0 -
 FROM debian:buster-slim
 
 COPY --from=builder /usr/local/cargo/bin/sgcu65-backend-assignment /usr/local/bin/sgcu65-backend-assignment
 
 RUN apt-get update && apt-get install -y libpq-dev
+# -------------------------------------------------------
 
 CMD ["sgcu65-backend-assignment"]
