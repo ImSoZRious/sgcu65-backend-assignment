@@ -2,7 +2,7 @@
 - [Table of Contents](#table-of-contents)
 - [General](#general)
 - [User](#user)
-  - [Create task](#create-task)
+  - [Create user](#create-user)
   - [Read all user](#read-all-user)
   - [Update user](#update-user)
   - [Delete user](#delete-user)
@@ -10,7 +10,7 @@
   - [Search user](#search-user)
   - [Get team](#get-team)
 - [Task](#task)
-  - [Create task](#create-task-1)
+  - [Create task](#create-task)
   - [Read all task](#read-all-task)
   - [Update task](#update-task)
   - [Delete task](#delete-task)
@@ -50,7 +50,7 @@
 - if payload isn't specified, no payload is needed or optional.
 - if return isn't specified, no information is returned back. (Status code still told the status of the request)
 # User
-## Create task
+## Create user
 __POST /user__ \
 Create user payload. \
 Payload: [NewUser](#newuser-object) \
