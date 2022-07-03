@@ -11,9 +11,10 @@ use db::init_pool;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-  // Ok(())
-
   let db_pool = init_pool();
+
+  println!("[Init db]: Success");
+  println!("Start listening on with port 8080");
 
   HttpServer::new(move || {
     let user_scope = route::user::get_scope();
@@ -29,7 +30,7 @@ async fn main() -> std::io::Result<()> {
       .service(assign_user_scope)
       .service(team_scope)
   })
-  .bind(("127.0.0.1", 8080))?
+  .bind(("0.0.0.0", 8080))?
   .run()
   .await
 }

@@ -1,0 +1,19 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+  backend:
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    env_file:
+      - .env
+    restart: always

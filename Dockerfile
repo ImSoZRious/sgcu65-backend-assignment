@@ -1,15 +1,20 @@
 FROM rust:1.62-slim as builder
 
 WORKDIR /usr/src/myapp
+COPY Cargo.toml /usr/src/myapp/
+RUN apt-get update && apt-get install -y libpq-dev && mkdir src &&echo "fn main() {}" > src/main.rs
+
+RUN cargo build --release
+
 COPY . .
-RUN apt-get update && apt-get install -y libpq-dev
 
 RUN cargo install --path .
 
+
+FROM debian:buster-slim
+
+COPY --from=builder /usr/local/cargo/bin/sgcu65-backend-assignment /usr/local/bin/sgcu65-backend-assignment
+
+RUN apt-get update && apt-get install -y libpq-dev
+
 CMD ["sgcu65-backend-assignment"]
-
-# FROM debian:buster-slim
-
-# COPY --from=builder /usr/local/cargo/bin/myapp /usr/local/bin/myapp
-
-# CMD ["sgcu65-backend-assignment"]
