@@ -2,6 +2,8 @@
 - [Table of Contents](#table-of-contents)
 - [ชื่อ - นามสกุลผู้สมัคร](#ชื่อ---นามสกุลผู้สมัคร)
 - [How to start](#how-to-start)
+  - [Normal](#normal)
+  - [Lazy script](#lazy-script)
 - [Troubleshoot](#troubleshoot)
   - [Program exit with code 3](#program-exit-with-code-3)
 - [TODO](#todo)
@@ -23,12 +25,21 @@
 ปัณณวิชญ์ โลหะนิมิต
 
 # How to start
+## Normal
+clone this repo.
 set environment variable with this format. (.env.example is default valid file == "mv .env.example .env" is ok for testing)
 ```sh
 DATABASE_URL=postgres://USERNAME:PASSWORD@db:PORT/DATABASE_NAME
 ```
 it takes sometime, it's rust.
 ```sh
+docker-compose up
+```
+## Lazy script
+```sh
+git clone https://www.github.com/ImSoZRious/sgcu65-backend-assignment
+cd sgcu65-backend-assignment/
+mv .env.example .env
 docker-compose up
 ```
 
